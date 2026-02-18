@@ -191,19 +191,23 @@ DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL 
 
 ---
 
-## What This Takes Manually vs. With Claude Code
+## What Changes When an AI Agent Runs the Pipeline
 
-| Step | Manual | With Claude Code |
-|:-----|:------:|:----------------:|
-| Create & track ticket | 2-5 min | Part of the prompt |
-| Design schema | 15-30 min | Included in prompt |
-| Write CREATE TABLE DDL | 10-15 min | Generated + executed |
-| Search USPTO API | 30+ min (read API docs, write code) | One function call |
-| Write data loading script | 1-2 hours (pyodbc, MERGE, error handling) | Generated + executed |
-| Write analytical queries | 30-60 min (OPENJSON syntax, CTEs) | Generated + executed |
-| Create visualizations | 30-60 min (matplotlib boilerplate) | Generated + saved |
-| Write executive summary | 20-30 min | Generated |
-| **Total** | **3-5 hours** | **~12 minutes** |
+The value isn't just speed — it's that one person can build something they wouldn't have attempted alone.
+
+Manually, each step requires you to context-switch between docs, languages, and tools. With Claude Code, your job shifts from **writing code** to **reviewing code** — you describe intent and verify results.
+
+| Step | What you do manually | What you do with Claude Code |
+|:-----|:---------------------|:-----------------------------|
+| Track the work | Open Azure DevOps, create a work item, fill in fields | Described in the prompt — created automatically |
+| Design schema | Decide column types, JSON storage strategy, indexing | Review the generated DDL, approve or adjust |
+| Search USPTO API | Read API docs, get a key, write HTTP requests, parse JSON | Describe what you want ("Intel patents") — agent calls the API |
+| Load data into SQL | Write pyodbc script, handle connections, build MERGE statements | Review the generated script, watch it execute, verify row counts |
+| Analyze with T-SQL | Look up OPENJSON syntax, write CTEs, iterate on queries | Ask questions in plain English, review the SQL and results |
+| Visualize results | Write matplotlib boilerplate, format axes, save figures | Describe the charts you want, review the output |
+| Summarize findings | Write a report from scratch based on query results | Review the generated summary, edit for tone |
+
+**The honest version:** I could not have built this pipeline without Claude Code — not because I can't write T-SQL or Python, but because I wouldn't have sat down and wired together the USPTO API, pyodbc MERGE statements, OPENJSON analytics, matplotlib charts, and Azure DevOps tickets in one sitting. The breadth of tools and syntax across a pipeline like this is the real barrier, and that's exactly what an AI agent absorbs for you.
 
 ---
 
@@ -250,6 +254,68 @@ The CLAUDE.md file teaches the AI your tools, patterns, and standards. That's th
 
 ---
 
+## Quick Setup with Claude Code
+
+> Clone the repo, open it in Claude Code, and paste this prompt to install all dependencies:
+
+<details>
+<summary><b>Setup Prompt</b> <sup>(click to expand)</sup></summary>
+
+```xml
+<setup-request>
+  <context>
+    I just cloned the azure-sql-patent-intelligence repo and need to install all
+    dependencies and verify my environment is ready for the demo.
+  </context>
+
+  <rules>
+    - Check what's already installed before installing anything
+    - Don't reinstall tools that are already present and working
+    - Never print or log credentials — use environment variables only
+    - If a step fails, explain what happened and continue with the rest
+  </rules>
+
+  <steps>
+    <step name="python-deps">
+      Install Python dependencies from requirements.txt (pyodbc, matplotlib,
+      python-dotenv, pandas, qrcode). Use pip install -r requirements.txt.
+    </step>
+
+    <step name="sqlcmd">
+      Install sqlcmd for connecting to Azure SQL Database.
+      macOS: brew install microsoft/mssql-release/mssql-tools18
+      Linux: Follow https://learn.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools
+      Verify with: sqlcmd --version
+    </step>
+
+    <step name="azure-devops-cli">
+      Install the Azure DevOps CLI extension for ticket-driven workflows.
+      Run: az extension add --name azure-devops
+      If Azure CLI is not installed: brew install azure-cli (macOS)
+      Verify with: az boards -h
+    </step>
+
+    <step name="env-file">
+      If .env doesn't already exist, copy .env.example to .env.
+      Then print a checklist of which variables still need to be filled in.
+    </step>
+
+    <step name="verify">
+      Run a verification check for each tool:
+      - Python: python3 -c "import pyodbc; import matplotlib; print('OK')"
+      - sqlcmd: sqlcmd --version
+      - Azure CLI: az --version
+      - USPTO API key: python3 -c "from tools.patent_search import _get_api_key; print('OK' if _get_api_key() else 'MISSING')"
+      Print a summary table showing what's ready and what still needs configuration.
+    </step>
+  </steps>
+</setup-request>
+```
+
+</details>
+
+---
+
 ## Prerequisites
 
 ### USPTO API Key (Required)
@@ -260,6 +326,8 @@ The CLAUDE.md file teaches the AI your tools, patterns, and standards. That's th
 4. Copy the key and add to `.env` file
 
 ### Azure SQL Database (Free Tier)
+
+> **Detailed walkthrough**: See **[docs/AZURE_SQL_SETUP.md](docs/AZURE_SQL_SETUP.md)** for step-by-step instructions with screenshots.
 
 1. Go to: **<https://aka.ms/azuresqlhub>** and click "Try for free"
 2. Create a logical server with SQL authentication
