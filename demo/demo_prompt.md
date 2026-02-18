@@ -27,6 +27,15 @@ Run `/clear` to start with a clean conversation.
     tech employer here in Phoenix. Let's use our Azure SQL Database and the USPTO patent API.
   </context>
 
+  <rules>
+    - Announce each step before executing it (e.g., "Step 3: Searching USPTO...")
+    - Show every SQL query and its results inline — the audience needs to see what's happening
+    - Keep all output concise: tables over paragraphs, top 10 over full dumps
+    - One script per task — no unnecessary helper files or abstractions
+    - Confirm success at each step with a brief summary before moving to the next
+    - Save charts to the output/ directory and confirm file paths
+  </rules>
+
   <steps>
     <step name="create-ticket">
       Create an Azure DevOps work item to track this pipeline build.

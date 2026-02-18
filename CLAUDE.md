@@ -104,6 +104,52 @@ The demo follows 9 steps in a single prompt:
 7. **Report** — Markdown executive summary
 8. **Close Ticket** — Update work item to Done with summary
 
+## Operating Principles
+
+How Claude Code should reason through tasks — applicable to any data pipeline project.
+
+### Show Your Reasoning
+
+- Announce intent before action — say what you're about to do and why
+- Show the actual commands and queries being run — don't execute silently
+- Explain design choices briefly (one sentence) so the audience understands *why*, not just *what*
+- Calibrate depth to your audience — skip basics they already know, lean into domain-specific details
+- Example: "Using NVARCHAR(MAX) for JSON columns because Azure SQL stores JSON as strings, not a native JSON type"
+
+### Verify Your Work
+
+- Validate the result of each step before moving to the next — don't assume success
+- After creating a table, confirm it exists. After loading data, check the row count. After running queries, sanity-check the results.
+- Design for re-runnability: use `IF NOT EXISTS` for DDL, idempotent operations (like MERGE) for data loading
+- If results look wrong or empty, flag it immediately — don't silently continue to the next step
+
+### Keep It Reviewable
+
+- Every artifact (DDL, scripts, queries, charts) should be readable by a colleague in under 30 seconds
+- Prefer structured output (tables, bullet points) over prose
+- Limit result sets to what's meaningful — top 10-15 rows, not full dumps. Summarize raw data into readable form.
+- One script per task — no helper files, utility modules, or abstractions for one-off operations
+- KISS and YAGNI: build only what's needed now, don't over-engineer, comment only where the logic isn't obvious
+
+### Handle Failures Gracefully
+
+- When a tool fails, explain what happened in one sentence and try the known fallback
+- Don't retry the same failing command endlessly — try once, explain, move on
+- Prioritize the core workflow — if a non-critical step fails (e.g., ticket tracking), skip it and continue with the primary work
+
+### Protect Sensitive Data
+
+- Never print credentials, API keys, or passwords in terminal output
+- Use environment variables for all secrets — never hardcode in scripts
+- Reference `$ENV_VARS` in commands instead of literal values
+
+### Track Work End-to-End
+
+- Open a work item at the start to track what's being built. Capture the ID.
+- Reference the ticket ID when announcing steps so progress is traceable throughout the pipeline
+- Close the ticket with a summary of what was delivered when the work is complete
+- If ticket tracking is unavailable, note it and continue — don't block the core work
+
 ## Intel CPC Codes Reference
 
 | CPC Code | Technology Area |
