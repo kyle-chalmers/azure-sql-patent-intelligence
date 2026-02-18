@@ -2,6 +2,18 @@
 
 If Claude Code encounters issues during the demo, use these manual commands.
 
+## 0. Create Azure DevOps Work Item
+
+```bash
+az boards work-item create \
+  --title "Build Intel Patent Intelligence Pipeline" \
+  --type Task \
+  --description "Build patent intelligence pipeline: schema creation, USPTO API search, data loading, T-SQL analysis, and visualization." \
+  --output table
+```
+
+Note the ID from the output for step 8.
+
 ## 1. Connect to Azure SQL
 
 ```bash
@@ -133,7 +145,18 @@ GROUP BY LEFT(cpc.value, 4) ORDER BY patents DESC;
 "
 ```
 
-## 6. Cleanup (after demo)
+## 8. Close Azure DevOps Work Item
+
+```bash
+# Replace <ID> with the work item ID from step 0
+az boards work-item update \
+  --id <ID> \
+  --state Done \
+  --discussion "Pipeline complete: PATENTS table created with indexes, Intel patents loaded via MERGE upserts, analysis run with OPENJSON, matplotlib visualizations generated, executive summary produced." \
+  --output table
+```
+
+## 9. Cleanup (after demo)
 
 ```bash
 sqlcmd -S $AZURE_SQL_SERVER -d $AZURE_SQL_DATABASE -U $AZURE_SQL_USER -P $AZURE_SQL_PASSWORD -Q "DROP TABLE IF EXISTS PATENTS;"
