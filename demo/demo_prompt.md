@@ -20,57 +20,91 @@ Run `/clear` to start with a clean conversation.
 
 ## Prompt 1: The Main Demo (paste this during the presentation)
 
-```
-I need to build a patent intelligence database for Intel Corporation — the largest
-tech employer here in Phoenix. Let's use our Azure SQL Database and the USPTO patent API.
+```xml
+<pipeline-request>
+  <context>
+    I need to build a patent intelligence database for Intel Corporation — the largest
+    tech employer here in Phoenix. Let's use our Azure SQL Database and the USPTO patent API.
+  </context>
 
-Here's what I need you to do:
+  <steps>
+    <step name="create-ticket">
+      Create an Azure DevOps work item to track this pipeline build.
+      Use az boards to create a Task titled "Build Intel Patent Intelligence Pipeline".
+    </step>
 
-1. CONNECT & DISCOVER: Show me what tables currently exist in our Azure SQL Database
-   (should be empty — we're building from scratch).
+    <step name="connect-discover">
+      Show me what tables currently exist in our Azure SQL Database
+      (should be empty — we're building from scratch).
+    </step>
 
-2. CREATE SCHEMA: Create a PATENTS table optimized for T-SQL with columns for
-   patent_number (PK), title, abstract, assignee, inventors (JSON as NVARCHAR(MAX)),
-   filing_date, grant_date, cpc_codes (JSON as NVARCHAR(MAX)), search_query, category,
-   and timestamps. Add indexes on assignee and filing_date.
+    <step name="create-schema">
+      Create a PATENTS table optimized for T-SQL with columns for
+      patent_number (PK), title, abstract, assignee, inventors (JSON as NVARCHAR(MAX)),
+      filing_date, grant_date, cpc_codes (JSON as NVARCHAR(MAX)), search_query, category,
+      and timestamps. Add indexes on assignee and filing_date.
+    </step>
 
-3. SEARCH USPTO: Use the patent search tools in tools/ to find Intel Corporation patents.
-   Search by assignee "Intel" with a limit of 50.
+    <step name="search-uspto">
+      Use the patent search tools in tools/ to find Intel Corporation patents.
+      Search by assignee "Intel" with a limit of 50.
+    </step>
 
-4. LOAD DATA: Write a Python script using pyodbc to load those patent results into
-   our Azure SQL table. Use parameterized MERGE statements for upsert logic. Execute it.
+    <step name="load-data">
+      Write a Python script using pyodbc to load those patent results into
+      our Azure SQL table. Use parameterized MERGE statements for upsert logic. Execute it.
+    </step>
 
-5. ANALYZE: Run T-SQL analytical queries:
-   - How many patents did we load and what's the date range?
-   - What are the filing trends by year?
-   - Who are Intel's most prolific inventors?
-   - What technology categories (CPC codes) do they focus on?
-   Use OPENJSON to parse the JSON arrays.
+    <step name="analyze">
+      Run T-SQL analytical queries:
+      - How many patents did we load and what's the date range?
+      - What are the filing trends by year?
+      - Who are Intel's most prolific inventors?
+      - What technology categories (CPC codes) do they focus on?
+      Use OPENJSON to parse the JSON arrays.
+    </step>
 
-6. VISUALIZE: Create matplotlib charts showing filing trends by year and top technology
-   categories. Save as PNG files.
+    <step name="visualize">
+      Create matplotlib charts showing filing trends by year and top technology
+      categories. Save as PNG files.
+    </step>
 
-7. REPORT: Generate a markdown executive summary of Intel's patent portfolio.
+    <step name="report">
+      Generate a markdown executive summary of Intel's patent portfolio.
+    </step>
 
-The patent search tools are in the tools/ directory. The Azure SQL connection details
-are in the .env file. Let's build this entire pipeline right now.
+    <step name="close-ticket">
+      Update the Azure DevOps work item to "Done". Add a discussion comment
+      summarizing what was built: table created, patents loaded, analysis complete.
+    </step>
+  </steps>
+
+  <resources>
+    The patent search tools are in the tools/ directory. The Azure SQL connection details
+    are in the .env file. Let's build this entire pipeline right now.
+  </resources>
+</pipeline-request>
 ```
 
 ---
 
 ## Prompt 2: Audience Participation (optional, use during Q&A if time allows)
 
-```
-The audience wants to see [COMPANY NAME]. Search the USPTO for their patents using
-search_by_assignee("[COMPANY NAME]", limit=20), load the results into our PATENTS table,
-and give me a quick summary of what they're patenting.
+```xml
+<follow-up>
+  The audience wants to see [COMPANY NAME]. Search the USPTO for their patents using
+  search_by_assignee("[COMPANY NAME]", limit=20), load the results into our PATENTS table,
+  and give me a quick summary of what they're patenting.
+</follow-up>
 ```
 
 ---
 
 ## Prompt 3: Quick Follow-Up Analysis (optional, if demo finishes early)
 
-```
-Compare Intel's patent activity to [COMPANY NAME]'s. Run a query showing both companies'
-filing trends side by side, and create a comparison chart.
+```xml
+<follow-up>
+  Compare Intel's patent activity to [COMPANY NAME]'s. Run a query showing both companies'
+  filing trends side by side, and create a comparison chart.
+</follow-up>
 ```

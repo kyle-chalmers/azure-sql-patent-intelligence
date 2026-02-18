@@ -2,27 +2,37 @@
 
 # Claude Code + Azure SQL: AI-Powered Patent Intelligence
 
-### Building a Complete Data Pipeline in One Conversation
+### From Zero to Full Data Pipeline — Faster Than You Thought Possible
 
 [![Claude Code](https://img.shields.io/badge/Claude_Code-AI_Agent-blueviolet?style=for-the-badge&logo=anthropic)](https://claude.ai/download)
 [![Azure SQL](https://img.shields.io/badge/Azure_SQL-Free_Tier-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)](https://aka.ms/azuresqlhub)
 [![Python](https://img.shields.io/badge/Python-pyodbc-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![T-SQL](https://img.shields.io/badge/T--SQL-OPENJSON-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white)](https://learn.microsoft.com/en-us/sql/t-sql/)
 [![USPTO API](https://img.shields.io/badge/USPTO-Patent_API-darkblue?style=for-the-badge)](https://data.uspto.gov)
+[![Azure DevOps](https://img.shields.io/badge/Azure_DevOps-Boards-0078D7?style=for-the-badge&logo=azuredevops&logoColor=white)](https://dev.azure.com)
 
 ---
 
 | **Date** | **Venue** | **Presenter** |
-|:---:|:---:|:---:|
+| :---: | :---: | :---: |
 | Tue, Feb 18, 2026 | Neudesic, Tempe | Kyle Chalmers |
 | 5:00 PM MST | Arizona Data Platform User Group | KC Labs AI |
 
 ---
 
-| **LinkedIn** | **YouTube** | **GitHub Repo** |
-|:---:|:---:|:---:|
-| <img src="./qr_codes/linkedin_qr.png" width="150"> | <img src="./qr_codes/youtube_qr.png" width="150"> | <img src="./qr_codes/repo_qr.png" width="150"> |
-| [Connect](https://www.linkedin.com/in/kylechalmers/) | [Subscribe](https://www.youtube.com/channel/UCkRi29nXFxNBuPhjseoB6AQ) | [Star](https://github.com/kyle-chalmers/azure-sql-patent-intelligence) |
+| **YouTube** | **LinkedIn** | **GitHub Repo** | **KC Labs AI** | **AI Workshop** | **Morning Hike** |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| <img src="./qr_codes/youtube_qr.png" width="150" alt="YouTube QR"> | <img src="./qr_codes/linkedin_qr.png" width="150" alt="LinkedIn QR"> | <img src="./qr_codes/repo_qr.png" width="150" alt="GitHub QR"> | <img src="./qr_codes/kclabs_qr.png" width="150" alt="KC Labs QR"> | <img src="./qr_codes/aztechweek_workshop_qr.png" width="150" alt="Workshop QR"> | <img src="./qr_codes/aztechweek_hike_qr.png" width="150" alt="Hike QR"> |
+| [Subscribe](https://www.youtube.com/channel/UCkRi29nXFxNBuPhjseoB6AQ) | [Connect](https://www.linkedin.com/in/kylechalmers/) | [Star](https://github.com/kyle-chalmers/azure-sql-patent-intelligence) | [Visit](https://kclabs.ai/) | [RSVP](https://partiful.com/e/VPy2EpNYQFppO6ZQA17n) | [RSVP](https://partiful.com/e/vMiPKyrTML8yf8Gnf618) |
+
+YouTube (subscribe for more data + AI content): https://www.youtube.com/channel/UCkRi29nXFxNBuPhjseoB6AQ
+LinkedIn: https://www.linkedin.com/in/kylechalmers/
+This repo: https://github.com/kyle-chalmers/azure-sql-patent-intelligence
+KC Labs AI: https://kclabs.ai/
+
+AZ Tech Week 2026:
+The Practical AI Playbook Workshop (Wed, Apr 8 - Scottsdale): https://partiful.com/e/VPy2EpNYQFppO6ZQA17n
+Sat Morning Hike, Connect, & Coffee (Sat, Apr 11 - Phoenix): https://partiful.com/e/vMiPKyrTML8yf8Gnf618
 
 </div>
 
@@ -30,19 +40,21 @@
 
 ## The Big Idea
 
-> **What if AI could handle your entire data pipeline — from API ingestion to database loading to analysis — requiring you only to connect it to the right tools?**
+> **One prompt. Nine pipeline steps. Under 15 minutes. What used to take half a day now happens in a single conversation — with ticket tracking, schema design, API ingestion, data loading, analysis, and visualization all handled by an AI agent using the tools you already know.**
 
 Tonight we build a patent intelligence database for **Intel Corporation** (the #1 tech employer in Phoenix) using:
-- **Claude Code** as the AI agent orchestrating everything
-- **Azure SQL Database** (free tier) as the data store
-- **USPTO Patent API** (free) as the data source
-- **sqlcmd + pyodbc** as the tools Claude uses — the same tools you already know
+
+- **Claude Code** as the AI agent — orchestrating the entire workflow via MCP servers and CLI tools
+- **Azure SQL Database** (free tier) as the data store, queried through `sqlcmd` and loaded with `pyodbc`
+- **Azure DevOps Boards** (free tier) for real-world ticket-driven workflow — the pipeline opens a ticket and closes it when done
+- **USPTO Patent API** (free) as the live data source
+- **One structured prompt** that drives all 9 steps from ticket creation to ticket closure
 
 ---
 
 ## Session Flow
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────────┐
 │                    SESSION OVERVIEW (~25 min)                         │
 ├──────────────────────────────────────────────────────────────────────┤
@@ -52,9 +64,10 @@ Tonight we build a patent intelligence database for **Intel Corporation** (the #
 │  │ (2 min)  │   │  (3 min)    │   │  (12 min)    │   │ (3 min)  │  │
 │  └──────────┘   └─────────────┘   └──────────────┘   └──────────┘  │
 │                                                              │      │
-│                  Show CLAUDE.md     Single prompt:            ▼      │
-│                  + tools/           empty DB ──▶ full      Q&A      │
+│                  Show CLAUDE.md     DevOps Ticket ──▶        ▼      │
+│                  + tools/           empty DB ──▶ full       Q&A     │
 │                                     patent analysis                  │
+│                                     ──▶ Close Ticket                 │
 │                                                                      │
 └──────────────────────────────────────────────────────────────────────┘
 ```
@@ -63,48 +76,78 @@ Tonight we build a patent intelligence database for **Intel Corporation** (the #
 
 ## Demo: One Prompt, Complete Pipeline
 
-```
-USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL Analysis ──▶ Visualizations
-  (search)    (load)      (store)       (OPENJSON)         (matplotlib)
+```text
+DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL Analysis ──▶ Visualizations ──▶ DevOps
+(ticket)    (search)     (load)      (store)       (OPENJSON)         (matplotlib)     (close)
 ```
 
 <details>
 <summary><b>Demo Prompt</b> <sup>(click to expand)</sup></summary>
 
-```text
-I need to build a patent intelligence database for Intel Corporation — the largest
-tech employer here in Phoenix. Let's use our Azure SQL Database and the USPTO patent API.
+```xml
+<pipeline-request>
+  <context>
+    I need to build a patent intelligence database for Intel Corporation — the largest
+    tech employer here in Phoenix. Let's use our Azure SQL Database and the USPTO patent API.
+  </context>
 
-Here's what I need you to do:
+  <steps>
+    <step name="create-ticket">
+      Create an Azure DevOps work item to track this pipeline build.
+      Use az boards to create a Task titled "Build Intel Patent Intelligence Pipeline".
+    </step>
 
-1. CONNECT & DISCOVER: Show me what tables currently exist in our Azure SQL Database
-   (should be empty — we're building from scratch).
+    <step name="connect-discover">
+      Show me what tables currently exist in our Azure SQL Database
+      (should be empty — we're building from scratch).
+    </step>
 
-2. CREATE SCHEMA: Create a PATENTS table optimized for T-SQL with columns for
-   patent_number (PK), title, abstract, assignee, inventors (JSON as NVARCHAR(MAX)),
-   filing_date, grant_date, cpc_codes (JSON as NVARCHAR(MAX)), search_query, category,
-   and timestamps. Add indexes on assignee and filing_date.
+    <step name="create-schema">
+      Create a PATENTS table optimized for T-SQL with columns for
+      patent_number (PK), title, abstract, assignee, inventors (JSON as NVARCHAR(MAX)),
+      filing_date, grant_date, cpc_codes (JSON as NVARCHAR(MAX)), search_query, category,
+      and timestamps. Add indexes on assignee and filing_date.
+    </step>
 
-3. SEARCH USPTO: Use the patent search tools in tools/ to find Intel Corporation patents.
-   Search by assignee "Intel" with a limit of 50.
+    <step name="search-uspto">
+      Use the patent search tools in tools/ to find Intel Corporation patents.
+      Search by assignee "Intel" with a limit of 50.
+    </step>
 
-4. LOAD DATA: Write a Python script using pyodbc to load those patent results into
-   our Azure SQL table. Use parameterized MERGE statements for upsert logic. Execute it.
+    <step name="load-data">
+      Write a Python script using pyodbc to load those patent results into
+      our Azure SQL table. Use parameterized MERGE statements for upsert logic. Execute it.
+    </step>
 
-5. ANALYZE: Run T-SQL analytical queries:
-   - How many patents did we load and what's the date range?
-   - What are the filing trends by year?
-   - Who are Intel's most prolific inventors?
-   - What technology categories (CPC codes) do they focus on?
-   Use OPENJSON to parse the JSON arrays.
+    <step name="analyze">
+      Run T-SQL analytical queries:
+      - How many patents did we load and what's the date range?
+      - What are the filing trends by year?
+      - Who are Intel's most prolific inventors?
+      - What technology categories (CPC codes) do they focus on?
+      Use OPENJSON to parse the JSON arrays.
+    </step>
 
-6. VISUALIZE: Create matplotlib charts showing filing trends by year and top technology
-   categories. Save as PNG files.
+    <step name="visualize">
+      Create matplotlib charts showing filing trends by year and top technology
+      categories. Save as PNG files.
+    </step>
 
-7. REPORT: Generate a markdown executive summary of Intel's patent portfolio.
+    <step name="report">
+      Generate a markdown executive summary of Intel's patent portfolio.
+    </step>
 
-The patent search tools are in the tools/ directory. The Azure SQL connection details
-are in the .env file. Let's build this entire pipeline right now.
+    <step name="close-ticket">
+      Update the Azure DevOps work item to "Done". Add a discussion comment
+      summarizing what was built: table created, patents loaded, analysis complete.
+    </step>
+  </steps>
+
+  <resources>
+    The patent search tools are in the tools/ directory. The Azure SQL connection details
+    are in the .env file. Let's build this entire pipeline right now.
+  </resources>
+</pipeline-request>
 ```
 
 </details>
@@ -133,6 +176,7 @@ are in the .env file. Let's build this entire pipeline right now.
 | ![Python](https://img.shields.io/badge/-pyodbc-3776AB?style=flat-square) | Data loading with MERGE upserts | `python3 load_patents.py` |
 | ![USPTO](https://img.shields.io/badge/-USPTO_API-darkblue?style=flat-square) | Patent data source (free) | `X-API-KEY` header |
 | ![T-SQL](https://img.shields.io/badge/-T--SQL-CC2927?style=flat-square) | Analysis with OPENJSON | `CROSS APPLY OPENJSON(...)` |
+| ![Azure DevOps](https://img.shields.io/badge/-Azure_DevOps-0078D7?style=flat-square) | Ticket-driven workflow | `az boards work-item create/update` |
 
 </div>
 
@@ -142,6 +186,7 @@ are in the .env file. Let's build this entire pipeline right now.
 
 | Step | Manual | With Claude Code |
 |:-----|:------:|:----------------:|
+| Create & track ticket | 2-5 min | Part of the prompt |
 | Design schema | 15-30 min | Included in prompt |
 | Write CREATE TABLE DDL | 10-15 min | Generated + executed |
 | Search USPTO API | 30+ min (read API docs, write code) | One function call |
@@ -160,6 +205,7 @@ are in the .env file. Let's build this entire pipeline right now.
 | Azure SQL Database free tier | $0/month (lifetime, 100K vCore-seconds, 32 GB) |
 | USPTO Patent API | $0 (free API key) |
 | Claude Code (Pro plan) | $20/month (or $100/month for Max) |
+| Azure DevOps Boards free tier | $0 (up to 5 users) |
 | sqlcmd + pyodbc | $0 (open source) |
 | **Total** | **$20-100/month** |
 
@@ -198,18 +244,21 @@ The CLAUDE.md file teaches the AI your tools, patterns, and standards. That's th
 ## Prerequisites
 
 ### USPTO API Key (Required)
-1. Go to: **https://data.uspto.gov/key/myapikey**
+
+1. Go to: **<https://data.uspto.gov/key/myapikey>**
 2. Sign in or create a free account (email verification)
 3. Click "Generate API Key"
 4. Copy the key and add to `.env` file
 
 ### Azure SQL Database (Free Tier)
-1. Go to: **https://aka.ms/azuresqlhub** and click "Try for free"
+
+1. Go to: **<https://aka.ms/azuresqlhub>** and click "Try for free"
 2. Create a logical server with SQL authentication
 3. Create database: `PatentIntelligence` (select "None" for data source)
 4. Add your client IP to the firewall rules
 
 ### Local Tools
+
 ```bash
 # Install sqlcmd (macOS)
 brew install sqlcmd
@@ -222,7 +271,26 @@ cp .env.example .env
 # Edit .env with your credentials
 ```
 
+### Azure DevOps Boards (Ticket Workflow)
+
+1. Go to: **<https://dev.azure.com>** and create or use an existing organization
+2. Create a project for tracking demo work items
+3. Install the CLI:
+
+```bash
+# Install Azure CLI (macOS)
+brew install azure-cli
+
+# Add Azure DevOps extension
+az extension add --name azure-devops
+
+# Login and configure defaults
+az login
+az devops configure --defaults organization=https://dev.azure.com/kylechalmers project=microsoft-builds
+```
+
 ### Verify Setup
+
 ```bash
 # Test USPTO API
 python3 -c "from tools.patent_search import _get_api_key; print('OK' if _get_api_key() else 'MISSING')"
@@ -276,11 +344,33 @@ python3 -c "import pyodbc; print('OK')"
 
 <div align="center">
 
+## Upcoming: AZ Tech Week 2026
+
+| Event | Date | Details |
+|:------|:-----|:--------|
+| **The Practical AI Playbook Workshop** | Wed, Apr 8 | Hands-on AI tools workshop at 1951@SkySong, Scottsdale |
+| **Sat. Morning Hike, Connect, & Coffee** | Sat, Apr 11 | Casual networking hike at Phoenix Mountain Preserve |
+
+</div>
+
+---
+
+<div align="center">
+
 ### Scan to Connect
 
-| **LinkedIn** | **YouTube** | **GitHub** |
-|:---:|:---:|:---:|
-| <img src="./qr_codes/linkedin_qr.png" width="150"> | <img src="./qr_codes/youtube_qr.png" width="150"> | <img src="./qr_codes/repo_qr.png" width="150"> |
+| **YouTube** | **LinkedIn** | **GitHub** | **KC Labs AI** |
+| :---: | :---: | :---: | :---: |
+| <img src="./qr_codes/youtube_qr.png" width="150" alt="YouTube QR"> | <img src="./qr_codes/linkedin_qr.png" width="150" alt="LinkedIn QR"> | <img src="./qr_codes/repo_qr.png" width="150" alt="GitHub QR"> | <img src="./qr_codes/kclabs_qr.png" width="150" alt="KC Labs QR"> |
+
+YouTube (subscribe for more data + AI content): https://www.youtube.com/channel/UCkRi29nXFxNBuPhjseoB6AQ
+LinkedIn: https://www.linkedin.com/in/kylechalmers/
+This repo: https://github.com/kyle-chalmers/azure-sql-patent-intelligence
+KC Labs AI: https://kclabs.ai/
+
+AZ Tech Week 2026:
+The Practical AI Playbook Workshop (Wed, Apr 8 - Scottsdale): https://partiful.com/e/VPy2EpNYQFppO6ZQA17n
+Sat Morning Hike, Connect, & Coffee (Sat, Apr 11 - Phoenix): https://partiful.com/e/vMiPKyrTML8yf8Gnf618
 
 ---
 

@@ -200,7 +200,9 @@ def search_by_assignee(company: str, limit: int = 50) -> list[dict]:
         List of patent dictionaries
     """
     # Try USPTO ODP API first (primary source)
-    results = _search_uspto_odp(company, limit)
+    # Use field-specific query to search applicant name directly
+    assignee_query = f'applicationMetaData.applicantBag.applicantNameText:"{company}"'
+    results = _search_uspto_odp(assignee_query, limit)
     if results:
         return results
 
@@ -227,7 +229,9 @@ def search_by_title(keywords: str, limit: int = 50) -> list[dict]:
         List of patent dictionaries
     """
     # Try USPTO ODP API first (primary source)
-    results = _search_uspto_odp(keywords, limit)
+    # Use field-specific query to search invention title directly
+    title_query = f'applicationMetaData.inventionTitle:({keywords})'
+    results = _search_uspto_odp(title_query, limit)
     if results:
         return results
 
