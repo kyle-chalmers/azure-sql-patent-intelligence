@@ -1,0 +1,4 @@
+pyodbc>=5.1.0
+matplotlib>=3.8.0
+python-dotenv>=1.0.0
+pandas>=2.1.0

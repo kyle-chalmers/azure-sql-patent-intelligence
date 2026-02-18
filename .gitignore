@@ -1,0 +1,38 @@
+# Environment variables
+.env
+
+# Internal/private files
+.internal/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output files from demo
+*.png
+*.csv
+output/
+
+# Claude Code
+.claude/
