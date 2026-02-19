@@ -19,18 +19,24 @@ This is a demo repository for the **Arizona Data Platform User Group** meetup pr
 
 ### CLI Tools
 
+When calling the cli tools, there may be a pause period of 30 seconds while it wakes back up.
+
 - **sqlcmd**: Connect to Azure SQL Database for DDL and analytical queries
   - Connection: `sqlcmd -S $AZURE_SQL_SERVER -d $AZURE_SQL_DATABASE -U $AZURE_SQL_USER -P $AZURE_SQL_PASSWORD`
+  - Login timeout (for free-tier wake-up): add `-l 60` flag
   - CSV output: add `-s "," -W` flags
   - Single query: `-Q "SELECT ..."`
+  - Load environment first: `source .env` before running sqlcmd commands
 - **Python + pyodbc**: For data loading scripts with parameterized queries
   - Connection string uses `ODBC Driver 18 for SQL Server`
   - Always use parameterized queries (? placeholders) — never string interpolation
+  - Load `.env` with `python-dotenv`: `from dotenv import load_dotenv; load_dotenv()`
+  - pyodbc connect: `pyodbc.connect(f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};DATABASE={db};UID={user};PWD={pwd}")`
 - **az boards** (Azure DevOps): Create and manage work items for ticket-driven workflows
-  - Requires: `az extension add --name azure-devops` + `az login`
-  - Set defaults: `az devops configure --defaults organization=https://dev.azure.com/kylechalmers project=microsoft-builds`
   - Create: `az boards work-item create --title "..." --type Task`
-  - Close: `az boards work-item update --id <ID> --state Done --discussion "Summary"`
+  - Update state: `az boards work-item update --id <ID> --state Done`
+  - Add comment: `az boards work-item update --id <ID> --discussion "Summary"`
+  - Delete: `az boards work-item delete --id <ID> --yes`
 
 ### Python Tools (in tools/ directory)
 
@@ -112,6 +118,8 @@ How Claude Code should reason through tasks — applicable to any data pipeline 
 
 - Announce intent before action — say what you're about to do and why
 - Show the actual commands and queries being run — don't execute silently
+- Print every T-SQL query as a formatted code block BEFORE executing it, so the presenter can copy-paste it into the Azure Portal Query Editor for visual validation
+- All SQL queries are also saved in the `sql/` directory (numbered by step) for reference and portal use
 - Explain design choices briefly (one sentence) so the audience understands *why*, not just *what*
 - Calibrate depth to your audience — skip basics they already know, lean into domain-specific details
 - Example: "Using NVARCHAR(MAX) for JSON columns because Azure SQL stores JSON as strings, not a native JSON type"

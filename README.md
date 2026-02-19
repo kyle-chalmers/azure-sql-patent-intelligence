@@ -187,8 +187,11 @@ DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL 
     </step>
 
     <step name="connect-discover">
-      Show me what tables currently exist in our Azure SQL Database
-      (should be empty — we're building from scratch).
+      Connect to our Azure SQL Database and show me what tables currently exist
+      (should be empty — we're building from scratch). Note: the free tier
+      auto-pauses after inactivity — the first query may take ~30 seconds to
+      wake the database up. Use a 60-second login timeout (-l 60) and if the
+      first attempt fails, wait a moment and retry once.
     </step>
 
     <step name="create-schema">
@@ -209,17 +212,27 @@ DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL 
     </step>
 
     <step name="analyze">
-      Run T-SQL analytical queries:
-      - How many patents did we load and what's the date range?
-      - What are the filing trends by year?
-      - Who are Intel's most prolific inventors?
-      - What technology categories (CPC codes) do they focus on?
-      Use OPENJSON to parse the JSON arrays.
+      Write T-SQL analytical queries and save each one to the sql/ directory
+      as a numbered .sql file before executing it. The audience will copy these
+      into the Azure Portal Query Editor to validate results visually.
+
+      Queries to write and run:
+      1. Summary stats — total patents loaded, earliest/latest filing dates,
+         unique assignees (save as sql/03_patent_count.sql)
+      2. Filing trends — patent count by year, ordered chronologically
+         (save as sql/04_filing_trends.sql)
+      3. Top inventors — parse the inventors JSON array using CROSS APPLY
+         OPENJSON, group by inventor name, top 10 (save as sql/05_top_inventors.sql)
+      4. Technology categories — parse cpc_codes JSON array using CROSS APPLY
+         OPENJSON, group by first 4 characters of CPC code, top 10
+         (save as sql/06_cpc_breakdown.sql)
     </step>
 
     <step name="visualize">
-      Create matplotlib charts showing filing trends by year and top technology
-      categories. Save as PNG files.
+      Create matplotlib charts from the query results and save as PNG files
+      to the output/ directory:
+      1. Filing trends by year (bar or line chart)
+      2. Top technology categories by CPC code (horizontal bar chart)
     </step>
 
     <step name="report">
