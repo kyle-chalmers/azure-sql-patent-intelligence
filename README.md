@@ -15,7 +15,7 @@
 
 | **Date** | **Venue** | **Presenter** |
 | :---: | :---: | :---: |
-| Tue, Feb 18, 2026 | Neudesic, Tempe | Kyle Chalmers |
+| Tue, Feb 18, 2026 | Virtual | Kyle Chalmers |
 | 5:00 PM MST | Arizona Data Platform User Group | KC Labs AI |
 
 ---
@@ -25,14 +25,14 @@
 | <img src="./qr_codes/youtube_qr.png" width="150" alt="YouTube QR"> | <img src="./qr_codes/linkedin_qr.png" width="150" alt="LinkedIn QR"> | <img src="./qr_codes/repo_qr.png" width="150" alt="GitHub QR"> | <img src="./qr_codes/kclabs_qr.png" width="150" alt="KC Labs QR"> | <img src="./qr_codes/aztechweek_workshop_qr.png" width="150" alt="Workshop QR"> | <img src="./qr_codes/aztechweek_hike_qr.png" width="150" alt="Hike QR"> |
 | [Subscribe](https://www.youtube.com/channel/UCkRi29nXFxNBuPhjseoB6AQ) | [Connect](https://www.linkedin.com/in/kylechalmers/) | [Star](https://github.com/kyle-chalmers/azure-sql-patent-intelligence) | [Visit](https://kclabs.ai/) | [RSVP](https://partiful.com/e/VPy2EpNYQFppO6ZQA17n) | [RSVP](https://partiful.com/e/vMiPKyrTML8yf8Gnf618) |
 
-YouTube (subscribe for more data + AI content): https://www.youtube.com/channel/UCkRi29nXFxNBuPhjseoB6AQ
-LinkedIn: https://www.linkedin.com/in/kylechalmers/
-This repo: https://github.com/kyle-chalmers/azure-sql-patent-intelligence
-KC Labs AI: https://kclabs.ai/
+- YouTube (subscribe for more data + AI content): https://www.youtube.com/channel/UCkRi29nXFxNBuPhjseoB6AQ
+- LinkedIn: https://www.linkedin.com/in/kylechalmers/
+- This repo: https://github.com/kyle-chalmers/azure-sql-patent-intelligence
+- KC Labs AI: https://kclabs.ai/
 
 AZ Tech Week 2026:
-The Practical AI Playbook Workshop (Wed, Apr 8 - Scottsdale): https://partiful.com/e/VPy2EpNYQFppO6ZQA17n
-Sat Morning Hike, Connect, & Coffee (Sat, Apr 11 - Phoenix): https://partiful.com/e/vMiPKyrTML8yf8Gnf618
+- The Practical AI Playbook Workshop (Wed, Apr 8 - Scottsdale): https://partiful.com/e/VPy2EpNYQFppO6ZQA17n
+- Sat Morning Hike, Connect, & Coffee (Sat, Apr 11 - Phoenix): https://partiful.com/e/vMiPKyrTML8yf8Gnf618
 
 </div>
 
@@ -40,15 +40,15 @@ Sat Morning Hike, Connect, & Coffee (Sat, Apr 11 - Phoenix): https://partiful.co
 
 ## The Big Idea
 
-> **One prompt. Nine pipeline steps. Under 15 minutes. What used to take half a day now happens in a single conversation — with ticket tracking, schema design, API ingestion, data loading, analysis, and visualization all handled by an AI agent using the tools you already know.**
+> **Today with Claude Code and other AI coding tools, one well-designed prompt with the appropriate context can lead us to building a full data pipeline in one sitting. What used to take days now can happen over hours or even minutes in a single conversation, with ticket tracking, schema design, API ingestion, data loading, analysis, and visualization all handled by an AI agent using the tools available in your Microsoft data stack today.**
 
-Tonight we build a patent intelligence database for **Intel Corporation** (the #1 tech employer in Phoenix) using:
+Tonight I will build a real patent intelligence database as if I was working for Intel Corporation (the #1 tech employer in Phoenix) using:
 
-- **Claude Code** as the AI agent — orchestrating the entire workflow via MCP servers and CLI tools
+- **Claude Code** as the AI agent — orchestrating the entire workflow via different CLI/MCP tools
 - **Azure SQL Database** (free tier) as the data store, queried through `sqlcmd` and loaded with `pyodbc`
 - **Azure DevOps Boards** (free tier) for real-world ticket-driven workflow — the pipeline opens a ticket and closes it when done
 - **USPTO Patent API** (free) as the live data source
-- **One structured prompt** that drives all 9 steps from ticket creation to ticket closure
+- **One structured prompt** that drives all steps from ticket creation to ticket closure.
 
 ---
 
@@ -71,6 +71,86 @@ Tonight we build a patent intelligence database for **Intel Corporation** (the #
 │                                                                      │
 └──────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Prereqs Prompt for Claude Code
+
+> After cloning this repo, open it in Claude Code and paste this prompt to install all dependencies:
+
+<details>
+<summary><b>Prereqs Prompt</b> <sup>(click to expand)</sup></summary>
+
+```xml
+<prereqs-request>
+  <context>
+    I just cloned the azure-sql-patent-intelligence repo and need to install all
+    dependencies, configure my environment, and verify everything works before
+    running the demo. My Azure SQL Database and USPTO API key should already be
+    set up — I just need the local tooling wired together.
+  </context>
+
+  <rules>
+    - Check what's already installed before installing — don't reinstall working tools
+    - Never print or log credentials — use environment variables from .env only
+    - If a step fails, explain what happened in one sentence and continue with the rest
+    - At the end, print a single summary table showing what's ready and what needs attention
+  </rules>
+
+  <steps>
+    <step name="env-file">
+      If .env doesn't already exist, copy .env.example to .env.
+      Print a checklist of which variables still need to be filled in (check for
+      empty values). Don't print the actual values — just show which are set and
+      which are missing.
+    </step>
+
+    <step name="python-deps">
+      Install Python dependencies from requirements.txt:
+      pyodbc, matplotlib, python-dotenv, pandas, qrcode.
+      Run: pip install -r requirements.txt
+      Verify with: python3 -c "import pyodbc, matplotlib, dotenv, pandas; print('OK')"
+    </step>
+
+    <step name="sqlcmd">
+      Install sqlcmd for connecting to Azure SQL Database.
+      macOS: brew install microsoft/mssql-release/mssql-tools18
+      Linux: https://learn.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools
+      Verify with: sqlcmd '-?'
+    </step>
+
+    <step name="azure-cli">
+      Install Azure CLI if not present, then add the Azure DevOps extension.
+      macOS: brew install azure-cli
+      Then: az extension add --name azure-devops
+      If already installed, skip. Verify with: az boards -h
+      Note: User will need to run 'az login' and 'az devops configure --defaults
+      organization=ORG project=PROJECT' themselves after this step.
+    </step>
+
+    <step name="test-azure-sql">
+      If AZURE_SQL_SERVER is set in .env, test the connection:
+      source .env && sqlcmd -S "$AZURE_SQL_SERVER" -d "$AZURE_SQL_DATABASE" \
+        -U "$AZURE_SQL_USER" -P "$AZURE_SQL_PASSWORD" \
+        -Q "SELECT DB_NAME() AS CurrentDB, SUSER_NAME() AS CurrentUser"
+      If it fails with a firewall error, tell the user to add their IP in
+      Azure Portal > SQL Server > Networking > Firewall rules.
+    </step>
+
+    <step name="verify-all">
+      Print a summary table:
+      - .env variables: which are set, which are empty
+      - Python packages: installed or missing
+      - sqlcmd: available or not
+      - Azure CLI + DevOps extension: available or not
+      - Azure SQL connection: connected or failed (with reason)
+      - USPTO API key: valid or missing
+    </step>
+  </steps>
+</prereqs-request>
+```
+
+</details>
 
 ---
 
@@ -165,6 +245,10 @@ DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL 
 
 ## Intel CPC Codes Reference
 
+**CPC (Cooperative Patent Classification)** is the global system used by the USPTO and European Patent Office to categorize patents by technology area. Every patent is tagged with one or more CPC codes — think of them as the "genre tags" for inventions. Analyzing CPC codes reveals where a company is investing its R&D.
+
+These are the CPC codes you'll see most often in Intel's patent portfolio:
+
 | CPC Code | Technology Area | Description |
 |:--------:|:----------------|:------------|
 | H01L | Semiconductor Devices | Intel's core — chip fabrication, packaging |
@@ -251,68 +335,6 @@ The CLAUDE.md file teaches the AI your tools, patterns, and standards. That's th
 </td>
 </tr>
 </table>
-
----
-
-## Quick Setup with Claude Code
-
-> Clone the repo, open it in Claude Code, and paste this prompt to install all dependencies:
-
-<details>
-<summary><b>Setup Prompt</b> <sup>(click to expand)</sup></summary>
-
-```xml
-<setup-request>
-  <context>
-    I just cloned the azure-sql-patent-intelligence repo and need to install all
-    dependencies and verify my environment is ready for the demo.
-  </context>
-
-  <rules>
-    - Check what's already installed before installing anything
-    - Don't reinstall tools that are already present and working
-    - Never print or log credentials — use environment variables only
-    - If a step fails, explain what happened and continue with the rest
-  </rules>
-
-  <steps>
-    <step name="python-deps">
-      Install Python dependencies from requirements.txt (pyodbc, matplotlib,
-      python-dotenv, pandas, qrcode). Use pip install -r requirements.txt.
-    </step>
-
-    <step name="sqlcmd">
-      Install sqlcmd for connecting to Azure SQL Database.
-      macOS: brew install microsoft/mssql-release/mssql-tools18
-      Linux: Follow https://learn.microsoft.com/en-us/sql/linux/sql-server-linux-setup-tools
-      Verify with: sqlcmd --version
-    </step>
-
-    <step name="azure-devops-cli">
-      Install the Azure DevOps CLI extension for ticket-driven workflows.
-      Run: az extension add --name azure-devops
-      If Azure CLI is not installed: brew install azure-cli (macOS)
-      Verify with: az boards -h
-    </step>
-
-    <step name="env-file">
-      If .env doesn't already exist, copy .env.example to .env.
-      Then print a checklist of which variables still need to be filled in.
-    </step>
-
-    <step name="verify">
-      Run a verification check for each tool:
-      - Python: python3 -c "import pyodbc; import matplotlib; print('OK')"
-      - sqlcmd: sqlcmd --version
-      - Azure CLI: az --version
-      - USPTO API key: python3 -c "from tools.patent_search import _get_api_key; print('OK' if _get_api_key() else 'MISSING')"
-      Print a summary table showing what's ready and what still needs configuration.
-    </step>
-  </steps>
-</setup-request>
-```
-
-</details>
 
 ---
 
