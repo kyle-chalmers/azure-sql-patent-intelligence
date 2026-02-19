@@ -33,10 +33,14 @@ When calling the cli tools, there may be a pause period of 30 seconds while it w
   - Load `.env` with `python-dotenv`: `from dotenv import load_dotenv; load_dotenv()`
   - pyodbc connect: `pyodbc.connect(f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};DATABASE={db};UID={user};PWD={pwd}")`
 - **az boards** (Azure DevOps): Create and manage work items for ticket-driven workflows
-  - Create: `az boards work-item create --title "..." --type Task`
-  - Update state: `az boards work-item update --id <ID> --state Done`
-  - Add comment: `az boards work-item update --id <ID> --discussion "Summary"`
-  - Delete: `az boards work-item delete --id <ID> --yes`
+  - Always include `--org "https://dev.azure.com/kylechalmers" --project "microsoft-builds"` on every command
+  - Assign to Kyle: `--assigned-to "kylechalmers@outlook.com"`
+  - Create: `az boards work-item create --title "..." --type Task --assigned-to "kylechalmers@outlook.com" --org "https://dev.azure.com/kylechalmers" --project "microsoft-builds"`
+  - Transition to Doing (when work starts): `az boards work-item update --id <ID> --state "Doing" --org "https://dev.azure.com/kylechalmers"`
+  - Transition to Done (when work completes): `az boards work-item update --id <ID> --state "Done" --org "https://dev.azure.com/kylechalmers"`
+  - Add comment: `az boards work-item update --id <ID> --discussion "Summary" --org "https://dev.azure.com/kylechalmers"`
+  - Delete: `az boards work-item delete --id <ID> --yes --org "https://dev.azure.com/kylechalmers" --project "microsoft-builds"`
+  - State lifecycle: `To Do` → `Doing` (start of work) → `Done` (completion)
 
 ### Python Tools (in tools/ directory)
 
@@ -154,8 +158,9 @@ How Claude Code should reason through tasks — applicable to any data pipeline 
 ### Track Work End-to-End
 
 - Open a work item at the start to track what's being built. Capture the ID.
+- Immediately transition it to `Doing` once work begins.
 - Reference the ticket ID when announcing steps so progress is traceable throughout the pipeline
-- Close the ticket with a summary of what was delivered when the work is complete
+- Close the ticket (state → `Done`) with a summary comment when work is complete
 - If ticket tracking is unavailable, note it and continue — don't block the core work
 
 ## Intel CPC Codes Reference
