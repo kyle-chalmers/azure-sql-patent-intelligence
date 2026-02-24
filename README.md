@@ -274,6 +274,17 @@ DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL 
 
 ---
 
+## Key Definitions
+
+| Term | Definition |
+|:-----|:-----------|
+| **CLAUDE.md** | A markdown file that gives Claude Code all the context it needs about your project: available tools, database connections, coding conventions, and workflow steps. Think of it as the instruction manual for your AI agent. |
+| **MERGE (T-SQL)** | An upsert statement. If the record exists, update it. If it doesn't, insert it. Makes data loading idempotent, so you can run it multiple times without duplicating data. |
+| **OPENJSON (T-SQL)** | A T-SQL function that lets you query inside JSON strings stored in NVARCHAR columns. Azure SQL doesn't have a native JSON type, so this is how you parse JSON arrays for analysis. |
+| **CPC Codes** | Cooperative Patent Classification. Every patent is tagged with codes describing its technology area. G06N is AI/ML, G06F is data processing, G06Q is business intelligence. Think of them as genre tags for inventions. |
+
+---
+
 ## AI & Data CPC Codes Reference
 
 **CPC (Cooperative Patent Classification)** is the global system used by the USPTO and European Patent Office to categorize patents by technology area. Every patent is tagged with one or more CPC codes — think of them as the "genre tags" for inventions. Analyzing CPC codes reveals where innovation is happening across different AI and data processing domains.
