@@ -35,7 +35,8 @@ When calling the cli tools, there may be a pause period of 30 seconds while it w
 - **az boards** (Azure DevOps): Create and manage work items for ticket-driven workflows
   - Always include `--org "https://dev.azure.com/kylechalmers" --project "microsoft-builds"` on every command
   - Assign to Kyle: `--assigned-to "kylechalmers@outlook.com"`
-  - Create: `az boards work-item create --title "..." --type Task --assigned-to "kylechalmers@outlook.com" --org "https://dev.azure.com/kylechalmers" --project "microsoft-builds"`
+  - Create: `az boards work-item create --title "..." --type Task --description "..." --assigned-to "kylechalmers@outlook.com" --org "https://dev.azure.com/kylechalmers" --project "microsoft-builds"`
+  - **Description is required** — every work item must include a `--description` explaining what the task involves and why it's needed
   - Transition to Doing (when work starts): `az boards work-item update --id <ID> --state "Doing" --org "https://dev.azure.com/kylechalmers"`
   - Transition to Done (when work completes): `az boards work-item update --id <ID> --state "Done" --org "https://dev.azure.com/kylechalmers"`
   - Add comment: `az boards work-item update --id <ID> --discussion "Summary" --org "https://dev.azure.com/kylechalmers"`
