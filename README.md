@@ -42,7 +42,7 @@ AZ Tech Week 2026:
 
 > **Today with Claude Code and other AI coding tools, one well-designed prompt with the appropriate context can lead us to building a full data pipeline in one sitting. What used to take days now can happen over hours or even minutes in a single conversation, with ticket tracking, schema design, API ingestion, data loading, analysis, and visualization all handled by an AI agent using the tools available in your Microsoft data stack today.**
 
-Tonight I will build a real patent intelligence database as if I was working for Intel Corporation (the #1 tech employer in Phoenix) using:
+In this video I'll build a real patent intelligence database analyzing AI and data processing patents across the industry using:
 
 - **Claude Code** as the AI agent — orchestrating the entire workflow via different CLI/MCP tools
 - **Azure SQL Database** (free tier) as the data store, queried through `sqlcmd` and loaded with `pyodbc`
@@ -167,8 +167,9 @@ DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL 
 ```xml
 <pipeline-request>
   <context>
-    I need to build a patent intelligence database for Intel Corporation — the largest
-    tech employer here in Phoenix. Let's use our Azure SQL Database and the USPTO patent API.
+    I need to build a patent intelligence database for AI and data processing patents —
+    covering AI data processing, predictive analytics, and business intelligence.
+    Let's use our Azure SQL Database and the USPTO patent API.
   </context>
 
   <rules>
@@ -183,7 +184,7 @@ DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL 
   <steps>
     <step name="create-ticket">
       Create an Azure DevOps work item to track this pipeline build.
-      Use az boards to create a Task titled "Build Intel Patent Intelligence Pipeline".
+      Use az boards to create a Task titled "Build AI & Data Patent Intelligence Pipeline".
     </step>
 
     <step name="connect-discover">
@@ -202,13 +203,30 @@ DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL 
     </step>
 
     <step name="search-uspto">
-      Use the patent search tools in tools/ to find Intel Corporation patents.
-      Search by assignee "Intel" with a limit of 50.
+      Use the patent search tools in tools/ to search three AI & data topics:
+      search_by_title("AI data processing", limit=17),
+      search_by_title("predictive analytics", limit=17),
+      search_by_title("business intelligence", limit=16).
+      Merge all results into one list (50 patents total).
     </step>
 
     <step name="load-data">
       Write a Python script using pyodbc to load those patent results into
       our Azure SQL table. Use parameterized MERGE statements for upsert logic. Execute it.
+    </step>
+
+    <step name="backfill">
+      Backfill all AI data processing, predictive analytics, and business intelligence patents
+      filed since November 30, 2022 (when ChatGPT launched). Use date-range filtering on the
+      USPTO API to pull patents in batches, loading each batch into the PATENTS table with MERGE
+      upserts. Track total patents loaded and date range covered.
+    </step>
+
+    <step name="daily-sync">
+      Set up a daily sync process that loads only net-new patents since the last run.
+      Create a SYNC_LOG table to track the last successful sync date and patent count.
+      Write a Python script that queries the USPTO API for patents filed after the last
+      sync date, loads them via MERGE upserts, and updates the sync log.
     </step>
 
     <step name="analyze">
@@ -236,7 +254,7 @@ DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL 
     </step>
 
     <step name="report">
-      Generate a markdown executive summary of Intel's patent portfolio.
+      Generate a markdown executive summary of the AI & data patent landscape.
     </step>
 
     <step name="close-ticket">
@@ -256,18 +274,20 @@ DevOps ──▶ USPTO API ──▶ Python ──▶ Azure SQL ──▶ T-SQL 
 
 ---
 
-## Intel CPC Codes Reference
+## AI & Data CPC Codes Reference
 
-**CPC (Cooperative Patent Classification)** is the global system used by the USPTO and European Patent Office to categorize patents by technology area. Every patent is tagged with one or more CPC codes — think of them as the "genre tags" for inventions. Analyzing CPC codes reveals where a company is investing its R&D.
+**CPC (Cooperative Patent Classification)** is the global system used by the USPTO and European Patent Office to categorize patents by technology area. Every patent is tagged with one or more CPC codes — think of them as the "genre tags" for inventions. Analyzing CPC codes reveals where innovation is happening across different AI and data processing domains.
 
-These are the CPC codes you'll see most often in Intel's patent portfolio:
+These are the CPC codes you'll see most often in AI & data processing patents:
 
 | CPC Code | Technology Area | Description |
 |:--------:|:----------------|:------------|
-| H01L | Semiconductor Devices | Intel's core — chip fabrication, packaging |
-| G06F | Digital Data Processing | CPU architecture, computing systems |
-| H04L | Digital Transmission | Networking, 5G, data center interconnects |
-| G06N | AI/ML Computing | Neural networks, quantum computing |
+| G06N | AI/ML Computing | Neural networks, machine learning, deep learning |
+| G06F | Digital Data Processing | Data processing systems, computing architectures |
+| G06Q | Business Data Processing | BI systems, financial analytics, e-commerce |
+| G06V | Image/Video Recognition | Computer vision, pattern recognition |
+| G10L | Speech Analysis | Speech recognition, NLP, voice processing |
+| G16H | Healthcare Informatics | AI in medicine, clinical decision support |
 
 ---
 
@@ -298,7 +318,7 @@ Manually, each step requires you to context-switch between docs, languages, and 
 |:-----|:---------------------|:-----------------------------|
 | Track the work | Open Azure DevOps, create a work item, fill in fields | Described in the prompt — created automatically |
 | Design schema | Decide column types, JSON storage strategy, indexing | Review the generated DDL, approve or adjust |
-| Search USPTO API | Read API docs, get a key, write HTTP requests, parse JSON | Describe what you want ("Intel patents") — agent calls the API |
+| Search USPTO API | Read API docs, get a key, write HTTP requests, parse JSON | Describe what you want ("AI data processing patents") — agent calls the API |
 | Load data into SQL | Write pyodbc script, handle connections, build MERGE statements | Review the generated script, watch it execute, verify row counts |
 | Analyze with T-SQL | Look up OPENJSON syntax, write CTEs, iterate on queries | Ask questions in plain English, review the SQL and results |
 | Visualize results | Write matplotlib boilerplate, format axes, save figures | Describe the charts you want, review the output |

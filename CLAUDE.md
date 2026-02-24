@@ -4,10 +4,10 @@
 
 ## Project Overview
 
-This is a demo repository for the **Arizona Data Platform User Group** meetup presentation showing how Claude Code integrates with Azure SQL Database to build an AI-powered patent intelligence pipeline.
+This is a demo repository for a **KC Labs AI YouTube video** showing how Claude Code integrates with Azure SQL Database to build an AI-powered patent intelligence pipeline.
 
-**Audience**: ~34 Microsoft data professionals (DBAs, SQL Server devs, BI analysts)
-**Demo Subject**: Intel Corporation patent analysis using USPTO API + Azure SQL Database
+**Audience**: YouTube viewers — data professionals, AI practitioners, and developers
+**Demo Subject**: AI & data processing patent analysis using USPTO API + Azure SQL Database
 
 ## Available Tools
 
@@ -45,8 +45,12 @@ When calling the cli tools, there may be a pause period of 30 seconds while it w
 ### Python Tools (in tools/ directory)
 
 - **patent_search.py**: USPTO API wrapper with 3-tier fallback (USPTO ODP → Google Patents → Sample Data)
-  - `search_by_assignee("Intel", limit=50)` — primary function for demo
-  - `search_by_title("semiconductor", limit=50)` — keyword search
+  - `search_by_title("AI data processing", limit=17)` — primary function for demo
+  - `search_by_title("predictive analytics", limit=17)` — second topic
+  - `search_by_title("business intelligence", limit=16)` — third topic
+  - All 50 patents merge into the same PATENTS table for cross-topic analysis
+  - Supports `filing_date_from` / `filing_date_to` params for date-range filtering
+  - Supports `start` param for pagination (API returns max 100 per request)
   - API key loaded from `.env` file (USPTO_API_KEY)
 - **azure_sql_queries.py**: T-SQL query builders
   - `build_create_table_sql()` — DDL for PATENTS table with indexes
@@ -54,6 +58,8 @@ When calling the cli tools, there may be a pause period of 30 seconds while it w
   - `get_trends_query()` — Filing trends by year
   - `get_top_inventors_query()` — Uses CROSS APPLY OPENJSON
   - `get_cpc_breakdown_query()` — Uses CROSS APPLY OPENJSON
+  - `build_create_sync_log_sql()` — DDL for SYNC_LOG table
+  - `get_last_sync_date_query()` — Last successful sync date for daily sync
 
 ## T-SQL Conventions for This Project
 
@@ -107,9 +113,11 @@ The demo follows 9 steps in a single prompt:
 0. **Create Ticket** — Azure DevOps work item to track the pipeline build
 1. **Connect & Discover** — Show empty database
 2. **Create Schema** — DDL with indexes
-3. **Search USPTO** — API call for Intel patents
+3. **Search USPTO** — API calls for AI data processing, predictive analytics, and business intelligence patents
 4. **Load Data** — Python pyodbc with MERGE upserts
 5. **Analyze** — T-SQL queries with OPENJSON
+5b. **Backfill** — All patents filed since Nov 30, 2022 (ChatGPT launch) via date-range API calls
+5c. **Daily Sync** — SYNC_LOG table + script to load net-new patents since last sync
 6. **Visualize** — matplotlib charts
 7. **Report** — Markdown executive summary
 8. **Close Ticket** — Update work item to Done with summary
@@ -163,11 +171,13 @@ How Claude Code should reason through tasks — applicable to any data pipeline 
 - Close the ticket (state → `Done`) with a summary comment when work is complete
 - If ticket tracking is unavailable, note it and continue — don't block the core work
 
-## Intel CPC Codes Reference
+## AI & Data CPC Codes Reference
 
 | CPC Code | Technology Area |
 | -------- | --------------- |
-| H01L | Semiconductor devices (Intel's core) |
+| G06N | AI/ML computing — neural networks, machine learning |
 | G06F | Electric digital data processing |
-| H04L | Digital information transmission |
-| G06N | Computing arrangements - AI/ML |
+| G06Q | Business data processing / BI systems |
+| G06V | Image/video recognition |
+| G10L | Speech analysis and recognition |
+| G16H | Healthcare informatics / AI in medicine |

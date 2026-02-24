@@ -17,14 +17,18 @@ from tools.azure_sql_queries import (
     get_trends_query,
     get_top_inventors_query,
     get_cpc_breakdown_query,
+    build_create_sync_log_sql,
+    get_last_sync_date_query,
 )
 
-# Intel Corporation CPC codes (most relevant technology areas)
-INTEL_CPC_CODES = {
-    "H01L": "Semiconductor devices (Intel's core)",
+# AI & Data processing CPC codes (most relevant technology areas)
+AI_DATA_CPC_CODES = {
+    "G06N": "AI/ML computing — neural networks, machine learning",
     "G06F": "Electric digital data processing",
-    "H04L": "Digital information transmission",
-    "G06N": "Computing arrangements - AI/ML",
+    "G06Q": "Business data processing / BI systems",
+    "G06V": "Image/video recognition",
+    "G10L": "Speech analysis and recognition",
+    "G16H": "Healthcare informatics / AI in medicine",
 }
 
 __all__ = [
@@ -39,6 +43,8 @@ __all__ = [
     "get_trends_query",
     "get_top_inventors_query",
     "get_cpc_breakdown_query",
+    "build_create_sync_log_sql",
+    "get_last_sync_date_query",
     # Constants
-    "INTEL_CPC_CODES",
+    "AI_DATA_CPC_CODES",
 ]
