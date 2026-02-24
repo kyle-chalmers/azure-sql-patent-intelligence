@@ -315,6 +315,39 @@ conn.close()
 "
 ```
 
+## 5d. Create & Deploy Azure Function
+
+> The `azure_function/` directory is built from scratch by Claude Code during the live demo.
+> If you need to create it manually, it should contain: `function_app.py` (timer trigger),
+> `host.json`, `requirements.txt`, and `shared/` (with `patent_search.py` and `azure_sql_queries.py`).
+
+```bash
+# Deploy the daily sync function to Azure
+cd azure_function && func azure functionapp publish patent-sync-func --python
+```
+
+```bash
+# Verify the function is registered
+az functionapp function show \
+  --name patent-sync-func \
+  --resource-group patent-intelligence-rg \
+  --function-name daily_patent_sync \
+  --output table
+```
+
+```bash
+# (Optional) Manually trigger the function to test
+az functionapp function invoke \
+  --name patent-sync-func \
+  --resource-group patent-intelligence-rg \
+  --function-name daily_patent_sync
+```
+
+```bash
+# (Optional) Stream live logs
+func azure functionapp logstream patent-sync-func
+```
+
 ## 8. Close Azure DevOps Work Item
 
 ```bash

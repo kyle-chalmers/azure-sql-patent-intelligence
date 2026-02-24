@@ -85,6 +85,22 @@ Run `/clear` to start with a clean conversation.
       sync date, loads them via MERGE upserts, and updates the sync log.
     </step>
 
+    <step name="deploy-function">
+      Create an Azure Function to run the daily sync automatically. Build the
+      azure_function/ directory from scratch with function_app.py, host.json,
+      and requirements.txt. The function should:
+        - Use a timer trigger with schedule "0 0 7 * * *" (daily at 7 AM UTC)
+        - Reuse the same patent search and MERGE upsert logic from the earlier steps
+        - Use ODBC Driver 17 (not 18 — the Consumption plan image ships with Driver 17)
+        - Copy the patent_search.py and azure_sql_queries.py into a shared/ subdirectory
+          so the function can import them
+      Then deploy live:
+        cd azure_function && func azure functionapp publish patent-sync-func --python
+      After deployment, confirm the function is registered using:
+        az functionapp function show --name patent-sync-func --resource-group patent-intelligence-rg --function-name daily_patent_sync
+      This turns the manual sync into a serverless job that runs every morning at 7 AM UTC.
+    </step>
+
     <step name="analyze">
       Write T-SQL analytical queries and save each one to the sql/ directory
       as a numbered .sql file before executing it. The audience will copy these
