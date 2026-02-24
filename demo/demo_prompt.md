@@ -23,8 +23,9 @@ Run `/clear` to start with a clean conversation.
 ```xml
 <pipeline-request>
   <context>
-    I need to build a patent intelligence database for Intel Corporation — the largest
-    tech employer here in Phoenix. Let's use our Azure SQL Database and the USPTO patent API.
+    I need to build a patent intelligence database for AI and data processing patents —
+    covering AI data processing, predictive analytics, and business intelligence.
+    Let's use our Azure SQL Database and the USPTO patent API.
   </context>
 
   <rules>
@@ -39,7 +40,7 @@ Run `/clear` to start with a clean conversation.
   <steps>
     <step name="create-ticket">
       Create an Azure DevOps work item to track this pipeline build.
-      Use az boards to create a Task titled "Build Intel Patent Intelligence Pipeline".
+      Use az boards to create a Task titled "Build AI & Data Patent Intelligence Pipeline".
     </step>
 
     <step name="connect-discover">
@@ -58,13 +59,46 @@ Run `/clear` to start with a clean conversation.
     </step>
 
     <step name="search-uspto">
-      Use the patent search tools in tools/ to find Intel Corporation patents.
-      Search by assignee "Intel" with a limit of 50.
+      Use the patent search tools in tools/ to search three AI & data topics:
+      search_by_title("AI data processing", limit=17),
+      search_by_title("predictive analytics", limit=17),
+      search_by_title("business intelligence", limit=16).
+      Merge all results into one list (50 patents total).
     </step>
 
     <step name="load-data">
       Write a Python script using pyodbc to load those patent results into
       our Azure SQL table. Use parameterized MERGE statements for upsert logic. Execute it.
+    </step>
+
+    <step name="backfill">
+      Backfill all AI data processing, predictive analytics, and business intelligence patents
+      filed since November 30, 2022 (when ChatGPT launched). Use date-range filtering on the
+      USPTO API to pull patents in batches, loading each batch into the PATENTS table with MERGE
+      upserts. Track total patents loaded and date range covered.
+    </step>
+
+    <step name="daily-sync">
+      Set up a daily sync process that loads only net-new patents since the last run.
+      Create a SYNC_LOG table to track the last successful sync date and patent count.
+      Write a Python script that queries the USPTO API for patents filed after the last
+      sync date, loads them via MERGE upserts, and updates the sync log.
+    </step>
+
+    <step name="deploy-function">
+      Create an Azure Function to run the daily sync automatically. Build the
+      azure_function/ directory from scratch with function_app.py, host.json,
+      and requirements.txt. The function should:
+        - Use a timer trigger with schedule "0 0 7 * * *" (daily at 7 AM UTC)
+        - Reuse the same patent search and MERGE upsert logic from the earlier steps
+        - Use ODBC Driver 17 (not 18 — the Consumption plan image ships with Driver 17)
+        - Copy the patent_search.py and azure_sql_queries.py into a shared/ subdirectory
+          so the function can import them
+      Then deploy live:
+        cd azure_function && func azure functionapp publish patent-sync-func --python
+      After deployment, confirm the function is registered using:
+        az functionapp function show --name patent-sync-func --resource-group patent-intelligence-rg --function-name daily_patent_sync
+      This turns the manual sync into a serverless job that runs every morning at 7 AM UTC.
     </step>
 
     <step name="analyze">
@@ -92,7 +126,7 @@ Run `/clear` to start with a clean conversation.
     </step>
 
     <step name="report">
-      Generate a markdown executive summary of Intel's patent portfolio.
+      Generate a markdown executive summary of the AI & data patent landscape.
     </step>
 
     <step name="close-ticket">
@@ -114,9 +148,9 @@ Run `/clear` to start with a clean conversation.
 
 ```xml
 <follow-up>
-  The audience wants to see [COMPANY NAME]. Search the USPTO for their patents using
-  search_by_assignee("[COMPANY NAME]", limit=20), load the results into our PATENTS table,
-  and give me a quick summary of what they're patenting.
+  The viewer wants to explore [TOPIC]. Search the USPTO for patents using
+  search_by_title("[TOPIC]", limit=20), load the results into our PATENTS table,
+  and give me a quick summary of what's being patented in that area.
 </follow-up>
 ```
 
@@ -126,7 +160,8 @@ Run `/clear` to start with a clean conversation.
 
 ```xml
 <follow-up>
-  Compare Intel's patent activity to [COMPANY NAME]'s. Run a query showing both companies'
-  filing trends side by side, and create a comparison chart.
+  Compare patent activity across our three topics: AI data processing, predictive analytics,
+  and business intelligence. Run a query showing filing trends by topic side by side,
+  and create a comparison chart.
 </follow-up>
 ```

@@ -4,10 +4,14 @@
 
 ## Project Overview
 
-This is a demo repository for the **Arizona Data Platform User Group** meetup presentation showing how Claude Code integrates with Azure SQL Database to build an AI-powered patent intelligence pipeline.
+This is a demo repository for a **KC Labs AI YouTube video** showing how Claude Code integrates with Azure SQL Database to build an AI-powered patent intelligence pipeline.
 
-**Audience**: ~34 Microsoft data professionals (DBAs, SQL Server devs, BI analysts)
-**Demo Subject**: Intel Corporation patent analysis using USPTO API + Azure SQL Database
+**Audience**: YouTube viewers — data professionals, AI practitioners, and developers
+**Demo Subject**: AI & data processing patent analysis using USPTO API + Azure SQL Database
+
+> **Claude Code**: If `.internal/OWNER_CONFIG.md` exists, read it at the start of each session and use those concrete values (org URLs, resource names, emails) for all commands. This avoids resolving `$ENV_VAR` references or guessing placeholder values.
+>
+> **Viewers cloning this repo**: Create your own `.internal/OWNER_CONFIG.md` with your personal values (DevOps org, Function App name, resource group, email). See the format in CLAUDE.md's Available Tools section. Then update `.env` with your credentials (see `.env.example`). The pipeline tools, prompts, and SQL patterns all work out of the box.
 
 ## Available Tools
 
@@ -33,20 +37,36 @@ When calling the cli tools, there may be a pause period of 30 seconds while it w
   - Load `.env` with `python-dotenv`: `from dotenv import load_dotenv; load_dotenv()`
   - pyodbc connect: `pyodbc.connect(f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};DATABASE={db};UID={user};PWD={pwd}")`
 - **az boards** (Azure DevOps): Create and manage work items for ticket-driven workflows
-  - Always include `--org "https://dev.azure.com/kylechalmers" --project "microsoft-builds"` on every command
-  - Assign to Kyle: `--assigned-to "kylechalmers@outlook.com"`
-  - Create: `az boards work-item create --title "..." --type Task --assigned-to "kylechalmers@outlook.com" --org "https://dev.azure.com/kylechalmers" --project "microsoft-builds"`
-  - Transition to Doing (when work starts): `az boards work-item update --id <ID> --state "Doing" --org "https://dev.azure.com/kylechalmers"`
-  - Transition to Done (when work completes): `az boards work-item update --id <ID> --state "Done" --org "https://dev.azure.com/kylechalmers"`
-  - Add comment: `az boards work-item update --id <ID> --discussion "Summary" --org "https://dev.azure.com/kylechalmers"`
-  - Delete: `az boards work-item delete --id <ID> --yes --org "https://dev.azure.com/kylechalmers" --project "microsoft-builds"`
+  - Always include `--org "$AZURE_DEVOPS_ORG" --project "$AZURE_DEVOPS_PROJECT"` on every command
+  - Create: `az boards work-item create --title "..." --type Task --org "$AZURE_DEVOPS_ORG" --project "$AZURE_DEVOPS_PROJECT"`
+  - Transition to Doing (when work starts): `az boards work-item update --id <ID> --state "Doing" --org "$AZURE_DEVOPS_ORG"`
+  - Transition to Done (when work completes): `az boards work-item update --id <ID> --state "Done" --org "$AZURE_DEVOPS_ORG"`
+  - Add comment: `az boards work-item update --id <ID> --discussion "Summary" --org "$AZURE_DEVOPS_ORG"`
+  - Delete: `az boards work-item delete --id <ID> --yes --org "$AZURE_DEVOPS_ORG" --project "$AZURE_DEVOPS_PROJECT"`
   - State lifecycle: `To Do` → `Doing` (start of work) → `Done` (completion)
+
+### Azure Functions (Daily Sync Automation)
+
+- **Function App**: `patent-sync-func` (Consumption plan, Python 3.10) — replace with your own Function App name
+- **Resource Group**: `patent-intelligence-rg` — replace with your own resource group
+- **Built during demo**: The `azure_function/` directory is created from scratch by Claude Code during the live demo (not pre-built)
+- **What to build**: `function_app.py` (timer-triggered), `host.json`, `requirements.txt` (azure-functions, pyodbc), and a `shared/` subdirectory with copies of `patent_search.py` and `azure_sql_queries.py`
+- **Schedule**: `0 0 7 * * *` (daily at 7:00 AM UTC / midnight MST)
+- **Deploy**: `cd azure_function && func azure functionapp publish <your-function-app> --python`
+- **View logs**: `func azure functionapp logstream <your-function-app>`
+- **Manual trigger**: `az functionapp function invoke --name <your-function-app> --resource-group <your-rg> --function-name daily_patent_sync`
+- **Important**: Uses `ODBC Driver 17` (not 18) — the Python 3.10 Consumption plan image ships with Driver 17
+- **Setup**: See Prerequisites in README.md for creating the Function App and configuring Application Settings
 
 ### Python Tools (in tools/ directory)
 
 - **patent_search.py**: USPTO API wrapper with 3-tier fallback (USPTO ODP → Google Patents → Sample Data)
-  - `search_by_assignee("Intel", limit=50)` — primary function for demo
-  - `search_by_title("semiconductor", limit=50)` — keyword search
+  - `search_by_title("AI data processing", limit=17)` — primary function for demo
+  - `search_by_title("predictive analytics", limit=17)` — second topic
+  - `search_by_title("business intelligence", limit=16)` — third topic
+  - All 50 patents merge into the same PATENTS table for cross-topic analysis
+  - Supports `filing_date_from` / `filing_date_to` params for date-range filtering
+  - Supports `start` param for pagination (API returns max 100 per request)
   - API key loaded from `.env` file (USPTO_API_KEY)
 - **azure_sql_queries.py**: T-SQL query builders
   - `build_create_table_sql()` — DDL for PATENTS table with indexes
@@ -54,6 +74,8 @@ When calling the cli tools, there may be a pause period of 30 seconds while it w
   - `get_trends_query()` — Filing trends by year
   - `get_top_inventors_query()` — Uses CROSS APPLY OPENJSON
   - `get_cpc_breakdown_query()` — Uses CROSS APPLY OPENJSON
+  - `build_create_sync_log_sql()` — DDL for SYNC_LOG table
+  - `get_last_sync_date_query()` — Last successful sync date for daily sync
 
 ## T-SQL Conventions for This Project
 
@@ -100,6 +122,8 @@ Required variables:
 - `AZURE_DEVOPS_ORG` — <https://dev.azure.com/kylechalmers>
 - `AZURE_DEVOPS_PROJECT` — microsoft-builds
 
+> **Note**: These same variables must be configured as Application Settings in the Azure Function App for the daily sync automation.
+
 ## Demo Flow
 
 The demo follows 9 steps in a single prompt:
@@ -107,9 +131,12 @@ The demo follows 9 steps in a single prompt:
 0. **Create Ticket** — Azure DevOps work item to track the pipeline build
 1. **Connect & Discover** — Show empty database
 2. **Create Schema** — DDL with indexes
-3. **Search USPTO** — API call for Intel patents
+3. **Search USPTO** — API calls for AI data processing, predictive analytics, and business intelligence patents
 4. **Load Data** — Python pyodbc with MERGE upserts
 5. **Analyze** — T-SQL queries with OPENJSON
+5b. **Backfill** — All patents filed since Nov 30, 2022 (ChatGPT launch) via date-range API calls
+5c. **Daily Sync** — SYNC_LOG table + script to load net-new patents since last sync
+5d. **Deploy Function** — `func azure functionapp publish` to deploy daily sync as Azure Function
 6. **Visualize** — matplotlib charts
 7. **Report** — Markdown executive summary
 8. **Close Ticket** — Update work item to Done with summary
@@ -163,11 +190,13 @@ How Claude Code should reason through tasks — applicable to any data pipeline 
 - Close the ticket (state → `Done`) with a summary comment when work is complete
 - If ticket tracking is unavailable, note it and continue — don't block the core work
 
-## Intel CPC Codes Reference
+## AI & Data CPC Codes Reference
 
 | CPC Code | Technology Area |
 | -------- | --------------- |
-| H01L | Semiconductor devices (Intel's core) |
+| G06N | AI/ML computing — neural networks, machine learning |
 | G06F | Electric digital data processing |
-| H04L | Digital information transmission |
-| G06N | Computing arrangements - AI/ML |
+| G06Q | Business data processing / BI systems |
+| G06V | Image/video recognition |
+| G10L | Speech analysis and recognition |
+| G16H | Healthcare informatics / AI in medicine |

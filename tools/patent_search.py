@@ -40,106 +40,110 @@ GOOGLE_PATENTS_API = "https://patents.google.com/xhr/query"
 
 # Sample data for demo when APIs are unavailable
 SAMPLE_PATENTS = {
-    "intel": [
+    "ai data processing": [
         {
-            "patent_number": "US20240389012A1",
-            "title": "Method for Advanced Semiconductor Packaging with Through-Silicon Vias",
-            "abstract": "A method for fabricating advanced semiconductor packages using through-silicon via technology for high-bandwidth interconnects.",
-            "assignee": "Intel Corporation",
-            "inventors": ["Ravi Mahajan", "Srinivas Pietambaram"],
-            "filing_date": "2024-05-15",
+            "patent_number": "US20240401234A1",
+            "title": "Distributed AI Data Processing Pipeline with Adaptive Resource Allocation",
+            "abstract": "A distributed data processing system that uses machine learning to dynamically allocate computing resources across processing nodes based on workload characteristics.",
+            "assignee": "Google LLC",
+            "inventors": ["Jeff Dean", "Sanjay Ghemawat"],
+            "filing_date": "2024-06-12",
             "grant_date": None,
-            "cpc_codes": ["H01L23/498", "H01L25/0657"],
+            "cpc_codes": ["G06N3/08", "G06F9/5083"],
         },
         {
-            "patent_number": "US20240356789A1",
-            "title": "Energy-Efficient AI Compute Architecture with Dynamic Precision Scaling",
-            "abstract": "A computing architecture that dynamically scales numerical precision based on workload requirements to optimize energy efficiency for AI inference.",
-            "assignee": "Intel Corporation",
-            "inventors": ["Naveen Mellempudi", "Dheevatsa Mudigere"],
-            "filing_date": "2024-04-22",
+            "patent_number": "US20240378901A1",
+            "title": "Real-Time AI Data Transformation Engine for Streaming Analytics",
+            "abstract": "An AI-powered data transformation engine that processes streaming data in real time, applying learned patterns to cleanse, enrich, and route data to downstream systems.",
+            "assignee": "IBM Corporation",
+            "inventors": ["Ruchir Puri", "Mukesh Khare"],
+            "filing_date": "2024-05-03",
             "grant_date": None,
-            "cpc_codes": ["G06N3/063", "G06F7/544"],
+            "cpc_codes": ["G06F16/2458", "G06N20/00"],
         },
         {
-            "patent_number": "US20240312456A1",
-            "title": "Heterogeneous Chiplet Integration Using Embedded Multi-Die Bridge",
-            "abstract": "A semiconductor device architecture using embedded multi-die interconnect bridge technology for heterogeneous chiplet integration.",
-            "assignee": "Intel Corporation",
-            "inventors": ["Wilfred Gomes", "Debendra Mallik"],
-            "filing_date": "2024-03-18",
+            "patent_number": "US11987654B2",
+            "title": "Automated Data Quality Assessment Using Neural Network Classification",
+            "abstract": "A system for automatically assessing data quality in large-scale datasets using neural network classifiers trained on historical data quality patterns.",
+            "assignee": "Amazon Technologies Inc",
+            "inventors": ["Swami Sivasubramanian", "Peter Skomoroch"],
+            "filing_date": "2023-11-20",
+            "grant_date": "2024-05-14",
+            "cpc_codes": ["G06N3/04", "G06F16/215"],
+        },
+        {
+            "patent_number": "US11876234B2",
+            "title": "Federated Learning Framework for Privacy-Preserving Data Processing",
+            "abstract": "A federated learning system that enables AI model training across distributed data sources without centralizing sensitive data.",
+            "assignee": "Microsoft Technology Licensing LLC",
+            "inventors": ["Brendan McMahan", "Keith Bonawitz"],
+            "filing_date": "2023-08-15",
+            "grant_date": "2024-01-23",
+            "cpc_codes": ["G06N3/098", "G06F21/6245"],
+        },
+    ],
+    "predictive analytics": [
+        {
+            "patent_number": "US20240389567A1",
+            "title": "Predictive Analytics Engine with Explainable AI for Business Forecasting",
+            "abstract": "A predictive analytics system that generates business forecasts with built-in explainability features, allowing users to understand the reasoning behind each prediction.",
+            "assignee": "Salesforce Inc",
+            "inventors": ["Richard Socher", "Caiming Xiong"],
+            "filing_date": "2024-04-28",
             "grant_date": None,
-            "cpc_codes": ["H01L25/18", "H01L23/5385"],
+            "cpc_codes": ["G06Q10/04", "G06N3/08"],
         },
         {
-            "patent_number": "US20240278901A1",
-            "title": "Secure Enclave Processing for Confidential Computing in Cloud Environments",
-            "abstract": "A method for providing hardware-based trusted execution environments for confidential computing workloads in multi-tenant cloud infrastructure.",
-            "assignee": "Intel Corporation",
-            "inventors": ["Anand Rajan", "Simon Johnson"],
-            "filing_date": "2024-02-14",
+            "patent_number": "US11923456B2",
+            "title": "Time-Series Anomaly Detection Using Transformer-Based Predictive Models",
+            "abstract": "A transformer-based architecture for detecting anomalies in time-series data by learning temporal patterns and predicting expected value distributions.",
+            "assignee": "SAS Institute Inc",
+            "inventors": ["Oliver Schabenberger", "Xin Yan"],
+            "filing_date": "2023-10-05",
+            "grant_date": "2024-03-12",
+            "cpc_codes": ["G06N3/0455", "G06F18/2433"],
+        },
+        {
+            "patent_number": "US11845678B2",
+            "title": "Predictive Maintenance System Using Multi-Sensor Fusion and Deep Learning",
+            "abstract": "A predictive maintenance platform that fuses data from multiple IoT sensors and applies deep learning models to predict equipment failures before they occur.",
+            "assignee": "Microsoft Technology Licensing LLC",
+            "inventors": ["Joseph Sirosh", "Wee Hyong Tok"],
+            "filing_date": "2023-07-18",
+            "grant_date": "2023-12-19",
+            "cpc_codes": ["G06N3/08", "G05B23/0283"],
+        },
+    ],
+    "business intelligence": [
+        {
+            "patent_number": "US20240367890A1",
+            "title": "Natural Language Query Interface for Business Intelligence Dashboards",
+            "abstract": "A natural language processing system that converts plain English questions into optimized SQL queries for business intelligence dashboards and data visualization tools.",
+            "assignee": "Tableau Software LLC",
+            "inventors": ["Andrew Beers", "Jock Mackinlay"],
+            "filing_date": "2024-05-10",
             "grant_date": None,
-            "cpc_codes": ["G06F21/53", "H04L9/3234"],
+            "cpc_codes": ["G06Q10/10", "G06F16/242"],
         },
         {
-            "patent_number": "US20240245123A1",
-            "title": "Photonic Integrated Circuit for Data Center Optical Interconnects",
-            "abstract": "An integrated photonic circuit design for high-bandwidth, low-latency optical interconnects in data center environments.",
-            "assignee": "Intel Corporation",
-            "inventors": ["Robert Blum", "Haisheng Rong"],
-            "filing_date": "2024-01-20",
-            "grant_date": None,
-            "cpc_codes": ["H04B10/25", "G02B6/12"],
+            "patent_number": "US11912345B2",
+            "title": "Automated Insight Generation from Enterprise Data Warehouses",
+            "abstract": "An AI system that automatically discovers and surfaces actionable insights from enterprise data warehouses by analyzing statistical patterns across business metrics.",
+            "assignee": "SAP SE",
+            "inventors": ["Juergen Mueller", "Thomas Saueressig"],
+            "filing_date": "2023-09-22",
+            "grant_date": "2024-02-27",
+            "cpc_codes": ["G06Q10/06", "G06N20/00"],
         },
         {
-            "patent_number": "US11934567B2",
-            "title": "Neural Network Accelerator with Sparse Matrix Computation Engine",
-            "abstract": "A hardware accelerator for neural network inference that exploits sparsity in weight matrices for improved throughput and energy efficiency.",
-            "assignee": "Intel Corporation",
-            "inventors": ["Eriko Nurvitadhi", "Ganesh Venkatesh"],
-            "filing_date": "2023-08-10",
-            "grant_date": "2024-03-19",
-            "cpc_codes": ["G06N3/08", "G06F17/16"],
-        },
-        {
-            "patent_number": "US11876543B2",
-            "title": "Advanced EUV Lithography Process for Sub-3nm Node Fabrication",
-            "abstract": "An extreme ultraviolet lithography process optimization for manufacturing semiconductor devices at sub-3 nanometer technology nodes.",
-            "assignee": "Intel Corporation",
-            "inventors": ["Todd Younkin", "Britt Turkot"],
-            "filing_date": "2023-06-05",
-            "grant_date": "2024-01-16",
-            "cpc_codes": ["H01L21/027", "G03F7/70"],
-        },
-        {
-            "patent_number": "US11789012B2",
-            "title": "5G Network Slicing Optimization Using Reinforcement Learning",
-            "abstract": "A system for optimizing 5G network slice allocation using reinforcement learning to maximize quality of service across diverse workloads.",
-            "assignee": "Intel Corporation",
-            "inventors": ["Rath Vannithamby", "Anthony Ngoc Tran"],
-            "filing_date": "2023-04-12",
-            "grant_date": "2023-10-17",
-            "cpc_codes": ["H04L41/0893", "H04W28/024"],
-        },
-        {
-            "patent_number": "US11723456B2",
-            "title": "In-Memory Computing Architecture for Graph Analytics",
-            "abstract": "A processing-in-memory architecture optimized for large-scale graph analytics workloads with near-data computation capabilities.",
-            "assignee": "Intel Corporation",
-            "inventors": ["Onur Mutlu", "Saugata Ghose"],
-            "filing_date": "2023-02-28",
-            "grant_date": "2023-08-08",
-            "cpc_codes": ["G06F15/78", "G06F12/0246"],
-        },
-        {
-            "patent_number": "US11654321B2",
-            "title": "Quantum Error Correction Method for Superconducting Qubit Arrays",
-            "abstract": "A quantum error correction technique for arrays of superconducting qubits enabling fault-tolerant quantum computation.",
-            "assignee": "Intel Corporation",
-            "inventors": ["James Clarke", "Anne Matsuura"],
-            "filing_date": "2023-01-10",
-            "grant_date": "2023-05-23",
-            "cpc_codes": ["G06N10/70", "H10N60/12"],
+            "patent_number": "US11834567B2",
+            "title": "Semantic Layer for Unified Business Intelligence Across Heterogeneous Data Sources",
+            "abstract": "A semantic layer technology that provides a unified business view across heterogeneous data sources, enabling consistent metrics and dimensions for BI reporting.",
+            "assignee": "Oracle International Corporation",
+            "inventors": ["Juan Loaiza", "Andrew Mendelsohn"],
+            "filing_date": "2023-06-30",
+            "grant_date": "2023-12-05",
+            "cpc_codes": ["G06Q10/10", "G06F16/25"],
         },
     ],
     "assa abloy": [
@@ -218,12 +222,21 @@ def search_by_assignee(company: str, limit: int = 50) -> list[dict]:
     return results
 
 
-def search_by_title(keywords: str, limit: int = 50) -> list[dict]:
-    """Search patents by title keywords.
+def search_by_title(
+    keywords: str,
+    limit: int = 50,
+    filing_date_from: Optional[str] = None,
+    filing_date_to: Optional[str] = None,
+    start: int = 0,
+) -> list[dict]:
+    """Search patents by title keywords with optional date-range filtering.
 
     Args:
-        keywords: Keywords to search in patent titles (e.g., "semiconductor")
+        keywords: Keywords to search in patent titles (e.g., "AI data processing")
         limit: Maximum number of results to return
+        filing_date_from: Start date for filing date filter (YYYY-MM-DD)
+        filing_date_to: End date for filing date filter (YYYY-MM-DD)
+        start: Offset for pagination (skip first N results)
 
     Returns:
         List of patent dictionaries
@@ -231,7 +244,11 @@ def search_by_title(keywords: str, limit: int = 50) -> list[dict]:
     # Try USPTO ODP API first (primary source)
     # Use field-specific query to search invention title directly
     title_query = f'applicationMetaData.inventionTitle:({keywords})'
-    results = _search_uspto_odp(title_query, limit)
+    if filing_date_from or filing_date_to:
+        date_from = filing_date_from or "*"
+        date_to = filing_date_to or "*"
+        title_query += f' AND applicationMetaData.filingDate:[{date_from} TO {date_to}]'
+    results = _search_uspto_odp(title_query, limit, start=start)
     if results:
         return results
 
@@ -266,12 +283,13 @@ def get_patent(patent_number: str) -> Optional[dict]:
     return results[0] if results else None
 
 
-def _search_uspto_odp(query: str, limit: int) -> list[dict]:
+def _search_uspto_odp(query: str, limit: int, start: int = 0) -> list[dict]:
     """Search USPTO Open Data Portal API.
 
     Args:
         query: Search query (company name, keywords, or patent number)
         limit: Maximum results to return
+        start: Offset for pagination (skip first N results)
 
     Returns:
         List of patent dictionaries, empty list on failure
@@ -284,6 +302,7 @@ def _search_uspto_odp(query: str, limit: int) -> list[dict]:
     params = {
         "q": query,
         "rows": min(limit, 100),
+        "start": start,
     }
 
     url = f"{USPTO_ODP_API}?{urllib.parse.urlencode(params)}"

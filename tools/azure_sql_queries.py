@@ -186,3 +186,46 @@ FROM PATENTS
 GROUP BY assignee
 ORDER BY total_patents DESC;
 """
+
+
+def build_create_sync_log_sql() -> str:
+    """Generate T-SQL CREATE TABLE statement for SYNC_LOG table.
+
+    Tracks daily sync runs: when they happened, what date range was covered,
+    how many patents were loaded, and which topics were searched.
+
+    Returns:
+        T-SQL DDL string with table creation
+    """
+    return """
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'SYNC_LOG')
+CREATE TABLE SYNC_LOG (
+    sync_id INT IDENTITY(1,1) PRIMARY KEY,
+    sync_date DATETIME2 DEFAULT GETDATE(),
+    filing_date_from DATE,
+    filing_date_to DATE,
+    patents_loaded INT,
+    search_topics NVARCHAR(500),
+    sync_status NVARCHAR(50) DEFAULT 'completed'
+);
+"""
+
+
+def get_last_sync_date_query() -> str:
+    """Query to get the last successful sync date.
+
+    Returns the most recent filing_date_to from a completed sync,
+    used as the starting point for the next daily sync run.
+
+    Returns:
+        T-SQL query string
+    """
+    return """
+SELECT TOP 1
+    filing_date_to AS last_sync_date,
+    sync_date,
+    patents_loaded
+FROM SYNC_LOG
+WHERE sync_status = 'completed'
+ORDER BY sync_date DESC;
+"""
