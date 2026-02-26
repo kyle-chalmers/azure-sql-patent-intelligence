@@ -8,7 +8,6 @@ from tools.patent_search import (
     search_by_assignee,
     search_by_title,
     get_patent,
-    SAMPLE_PATENTS,
 )
 
 from tools.azure_sql_queries import (
@@ -36,7 +35,6 @@ __all__ = [
     "search_by_assignee",
     "search_by_title",
     "get_patent",
-    "SAMPLE_PATENTS",
     # Azure SQL query builders
     "build_create_table_sql",
     "build_upsert_query",

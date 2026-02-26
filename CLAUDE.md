@@ -54,7 +54,7 @@ When calling the cli tools, there may be a pause period of 30 seconds while it w
 
 ### Python Tools (in tools/ directory)
 
-- **patent_search.py**: USPTO API wrapper with 3-tier fallback (USPTO ODP → Google Patents → Sample Data)
+- **patent_search.py**: USPTO API wrapper with 2-tier fallback (USPTO ODP → Google Patents)
   - `search_by_title("AI data processing", limit=17)` — primary function for demo
   - `search_by_title("predictive analytics", limit=17)` — second topic
   - `search_by_title("business intelligence", limit=16)` — third topic
