@@ -30,10 +30,8 @@ env/
 Thumbs.db
 
 # Output files from demo
-*.png
 !qr_codes/*.png
 *.csv
-output/
 
 # Azure Functions
 azure_function/local.settings.json
@@ -41,5 +39,4 @@ azure_function/.venv/
 azure_function/__pycache__/
 
 # Claude Code
-.claude/
 .mcp.json
