@@ -68,7 +68,7 @@ Set your SQL admin credentials:
 | **Server admin login** | `sqladmin` (or your preferred username) |
 | **Password** | Choose a strong password — you'll need it for `.env` |
 
-> **Why SQL authentication?** The demo tools (`sqlcmd`, `pyodbc`, DBHub MCP) all connect using username/password. Entra-only authentication won't work with these CLI tools without additional configuration.
+> **Why SQL authentication?** The demo tools (`sqlcmd`, `pyodbc`) all connect using username/password. Entra-only authentication won't work with these CLI tools without additional configuration.
 
 Click **OK** to return to the database creation page.
 
