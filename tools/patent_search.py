@@ -2,7 +2,6 @@
 
 Primary source: USPTO ODP API (api.uspto.gov) - requires API key
 Fallback: Google Patents API (rate-limited, no key required)
-Last resort: Sample data for demos
 
 API key should be set in environment variable USPTO_API_KEY or .env file.
 
@@ -37,138 +36,6 @@ USPTO_ODP_API = "https://api.uspto.gov/api/v1/patent/applications/search"
 
 # Google Patents API (fallback)
 GOOGLE_PATENTS_API = "https://patents.google.com/xhr/query"
-
-# Sample data for demo when APIs are unavailable
-SAMPLE_PATENTS = {
-    "ai data processing": [
-        {
-            "patent_number": "US20240401234A1",
-            "title": "Distributed AI Data Processing Pipeline with Adaptive Resource Allocation",
-            "abstract": "A distributed data processing system that uses machine learning to dynamically allocate computing resources across processing nodes based on workload characteristics.",
-            "assignee": "Google LLC",
-            "inventors": ["Jeff Dean", "Sanjay Ghemawat"],
-            "filing_date": "2024-06-12",
-            "grant_date": None,
-            "cpc_codes": ["G06N3/08", "G06F9/5083"],
-        },
-        {
-            "patent_number": "US20240378901A1",
-            "title": "Real-Time AI Data Transformation Engine for Streaming Analytics",
-            "abstract": "An AI-powered data transformation engine that processes streaming data in real time, applying learned patterns to cleanse, enrich, and route data to downstream systems.",
-            "assignee": "IBM Corporation",
-            "inventors": ["Ruchir Puri", "Mukesh Khare"],
-            "filing_date": "2024-05-03",
-            "grant_date": None,
-            "cpc_codes": ["G06F16/2458", "G06N20/00"],
-        },
-        {
-            "patent_number": "US11987654B2",
-            "title": "Automated Data Quality Assessment Using Neural Network Classification",
-            "abstract": "A system for automatically assessing data quality in large-scale datasets using neural network classifiers trained on historical data quality patterns.",
-            "assignee": "Amazon Technologies Inc",
-            "inventors": ["Swami Sivasubramanian", "Peter Skomoroch"],
-            "filing_date": "2023-11-20",
-            "grant_date": "2024-05-14",
-            "cpc_codes": ["G06N3/04", "G06F16/215"],
-        },
-        {
-            "patent_number": "US11876234B2",
-            "title": "Federated Learning Framework for Privacy-Preserving Data Processing",
-            "abstract": "A federated learning system that enables AI model training across distributed data sources without centralizing sensitive data.",
-            "assignee": "Microsoft Technology Licensing LLC",
-            "inventors": ["Brendan McMahan", "Keith Bonawitz"],
-            "filing_date": "2023-08-15",
-            "grant_date": "2024-01-23",
-            "cpc_codes": ["G06N3/098", "G06F21/6245"],
-        },
-    ],
-    "predictive analytics": [
-        {
-            "patent_number": "US20240389567A1",
-            "title": "Predictive Analytics Engine with Explainable AI for Business Forecasting",
-            "abstract": "A predictive analytics system that generates business forecasts with built-in explainability features, allowing users to understand the reasoning behind each prediction.",
-            "assignee": "Salesforce Inc",
-            "inventors": ["Richard Socher", "Caiming Xiong"],
-            "filing_date": "2024-04-28",
-            "grant_date": None,
-            "cpc_codes": ["G06Q10/04", "G06N3/08"],
-        },
-        {
-            "patent_number": "US11923456B2",
-            "title": "Time-Series Anomaly Detection Using Transformer-Based Predictive Models",
-            "abstract": "A transformer-based architecture for detecting anomalies in time-series data by learning temporal patterns and predicting expected value distributions.",
-            "assignee": "SAS Institute Inc",
-            "inventors": ["Oliver Schabenberger", "Xin Yan"],
-            "filing_date": "2023-10-05",
-            "grant_date": "2024-03-12",
-            "cpc_codes": ["G06N3/0455", "G06F18/2433"],
-        },
-        {
-            "patent_number": "US11845678B2",
-            "title": "Predictive Maintenance System Using Multi-Sensor Fusion and Deep Learning",
-            "abstract": "A predictive maintenance platform that fuses data from multiple IoT sensors and applies deep learning models to predict equipment failures before they occur.",
-            "assignee": "Microsoft Technology Licensing LLC",
-            "inventors": ["Joseph Sirosh", "Wee Hyong Tok"],
-            "filing_date": "2023-07-18",
-            "grant_date": "2023-12-19",
-            "cpc_codes": ["G06N3/08", "G05B23/0283"],
-        },
-    ],
-    "business intelligence": [
-        {
-            "patent_number": "US20240367890A1",
-            "title": "Natural Language Query Interface for Business Intelligence Dashboards",
-            "abstract": "A natural language processing system that converts plain English questions into optimized SQL queries for business intelligence dashboards and data visualization tools.",
-            "assignee": "Tableau Software LLC",
-            "inventors": ["Andrew Beers", "Jock Mackinlay"],
-            "filing_date": "2024-05-10",
-            "grant_date": None,
-            "cpc_codes": ["G06Q10/10", "G06F16/242"],
-        },
-        {
-            "patent_number": "US11912345B2",
-            "title": "Automated Insight Generation from Enterprise Data Warehouses",
-            "abstract": "An AI system that automatically discovers and surfaces actionable insights from enterprise data warehouses by analyzing statistical patterns across business metrics.",
-            "assignee": "SAP SE",
-            "inventors": ["Juergen Mueller", "Thomas Saueressig"],
-            "filing_date": "2023-09-22",
-            "grant_date": "2024-02-27",
-            "cpc_codes": ["G06Q10/06", "G06N20/00"],
-        },
-        {
-            "patent_number": "US11834567B2",
-            "title": "Semantic Layer for Unified Business Intelligence Across Heterogeneous Data Sources",
-            "abstract": "A semantic layer technology that provides a unified business view across heterogeneous data sources, enabling consistent metrics and dimensions for BI reporting.",
-            "assignee": "Oracle International Corporation",
-            "inventors": ["Juan Loaiza", "Andrew Mendelsohn"],
-            "filing_date": "2023-06-30",
-            "grant_date": "2023-12-05",
-            "cpc_codes": ["G06Q10/10", "G06F16/25"],
-        },
-    ],
-    "assa abloy": [
-        {
-            "patent_number": "US20250001234A1",
-            "title": "Multi-factor authentication door access control system",
-            "abstract": "A door access control system that combines biometric verification with mobile credentials...",
-            "assignee": "Example Corp Global Solutions AB",
-            "inventors": ["Erik Lindqvist", "Anna Svensson"],
-            "filing_date": "2025-09-03",
-            "grant_date": None,
-            "cpc_codes": ["E05B47/00", "G07C9/00"],
-        },
-        {
-            "patent_number": "US20250005678A1",
-            "title": "Beacon circuit for use with electronic locks",
-            "abstract": "An electronic lock system with integrated beacon circuitry for proximity detection...",
-            "assignee": "Example Corp AB",
-            "inventors": ["Johan Berg"],
-            "filing_date": "2025-08-07",
-            "grant_date": None,
-            "cpc_codes": ["E05B47/00", "H04W4/80"],
-        },
-    ],
-}
 
 
 def _get_api_key() -> Optional[str]:
@@ -213,13 +80,7 @@ def search_by_assignee(company: str, limit: int = 50) -> list[dict]:
     # Fallback to Google Patents
     print(f"[USPTO API unavailable, trying Google Patents for '{company}']")
     query = f"assignee={company}"
-    results = _search_google_patents(query, limit)
-    if results:
-        return results
-
-    # Last resort: sample data for demos
-    results = _get_sample_data(company.lower(), limit)
-    return results
+    return _search_google_patents(query, limit)
 
 
 def search_by_title(
@@ -255,13 +116,7 @@ def search_by_title(
     # Fallback to Google Patents
     print(f"[USPTO API unavailable, trying Google Patents for '{keywords}']")
     query = f"({keywords})"
-    results = _search_google_patents(query, limit)
-    if results:
-        return results
-
-    # Last resort: sample data for demos
-    results = _get_sample_data(keywords.lower(), limit)
-    return results
+    return _search_google_patents(query, limit)
 
 
 def get_patent(patent_number: str) -> Optional[dict]:
@@ -392,22 +247,6 @@ def _format_uspto_patent(app: dict) -> Optional[dict]:
         "status_code": meta.get("applicationStatusCode"),
     }
 
-
-def _get_sample_data(key: str, limit: int) -> list[dict]:
-    """Get sample data for demos when APIs are unavailable.
-
-    Args:
-        key: Search key (company name or keywords)
-        limit: Maximum results
-
-    Returns:
-        List of sample patent dictionaries
-    """
-    for sample_key, patents in SAMPLE_PATENTS.items():
-        if sample_key in key or key in sample_key:
-            print(f"[Using sample data for '{key}' - APIs unavailable]")
-            return patents[:limit]
-    return []
 
 
 def _search_google_patents(query: str, limit: int) -> list[dict]:
