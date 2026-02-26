@@ -197,7 +197,7 @@ def search_by_assignee(company: str, limit: int = 50) -> list[dict]:
     """Search patents by assignee/company name.
 
     Args:
-        company: Company name to search for (e.g., "Intel", "Microsoft")
+        company: Company name to search for (e.g., "Google", "Microsoft")
         limit: Maximum number of results to return
 
     Returns:

@@ -15,12 +15,6 @@ This is a demo repository for a **KC Labs AI YouTube video** showing how Claude 
 
 ## Available Tools
 
-### MCP Server: DBHub (Azure SQL)
-
-- Use for schema discovery and quick queries (the "wow" moment for the audience)
-- Tools available: `list_tables`, `describe_table`, `run_query`
-- If MCP is unavailable, fall back to sqlcmd seamlessly
-
 ### CLI Tools
 
 When calling the cli tools, there may be a pause period of 30 seconds while it wakes back up.
@@ -119,8 +113,8 @@ Required variables:
 - `AZURE_SQL_DATABASE` — PatentIntelligence
 - `AZURE_SQL_USER` — sqladmin
 - `AZURE_SQL_PASSWORD` — your password
-- `AZURE_DEVOPS_ORG` — <https://dev.azure.com/kylechalmers>
-- `AZURE_DEVOPS_PROJECT` — microsoft-builds
+- `AZURE_DEVOPS_ORG` — `https://dev.azure.com/your-org` (placeholder — replace with your org URL)
+- `AZURE_DEVOPS_PROJECT` — `your-project` (placeholder — replace with your project name)
 
 > **Note**: These same variables must be configured as Application Settings in the Azure Function App for the daily sync automation.
 
