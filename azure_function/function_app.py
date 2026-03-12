@@ -12,6 +12,7 @@ Environment variables (configure in Function App > Application Settings):
 import json
 import logging
 import os
+import time
 from datetime import date
 
 import azure.functions as func
@@ -32,15 +33,24 @@ SEARCH_TOPICS = [
 ]
 
 
-def _get_connection() -> pyodbc.Connection:
-    """Connect to Azure SQL using ODBC Driver 17 (Azure Function runtime)."""
-    return pyodbc.connect(
-        f"DRIVER={{ODBC Driver 17 for SQL Server}};"
-        f"SERVER={os.environ['AZURE_SQL_SERVER']};"
-        f"DATABASE={os.environ['AZURE_SQL_DATABASE']};"
-        f"UID={os.environ['AZURE_SQL_USER']};"
-        f"PWD={os.environ['AZURE_SQL_PASSWORD']}"
-    )
+def _get_connection(retries: int = 3, delay: int = 30) -> pyodbc.Connection:
+    """Connect to Azure SQL with retry for cold start (free tier wakes up in ~30-60s)."""
+    last_error = None
+    for attempt in range(retries):
+        try:
+            return pyodbc.connect(
+                f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+                f"SERVER={os.environ['AZURE_SQL_SERVER']};"
+                f"DATABASE={os.environ['AZURE_SQL_DATABASE']};"
+                f"UID={os.environ['AZURE_SQL_USER']};"
+                f"PWD={os.environ['AZURE_SQL_PASSWORD']}"
+            )
+        except pyodbc.Error as e:
+            last_error = e
+            if attempt < retries - 1:
+                logging.warning(f"DB connection attempt {attempt + 1}/{retries} failed, retrying in {delay}s: {e}")
+                time.sleep(delay)
+    raise last_error
 
 
 @app.timer_trigger(schedule="0 31 7 * * *", arg_name="timer", run_on_startup=False)
